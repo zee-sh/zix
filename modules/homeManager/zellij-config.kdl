@@ -1,0 +1,8 @@
+pane_frames false
+theme "catppuccin-frappe"
+
+ui {
+    pane_frames {
+        rounded_corners true
+    }
+}
