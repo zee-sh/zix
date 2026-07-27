@@ -35,6 +35,7 @@ in
       darwin.systemBase
       darwin.systemPreferences
       darwin.homebrew
+      darwin.nixpkgsWork
     ];
     home-manager.sharedModules = [ homeManager.base ];
   };
