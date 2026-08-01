@@ -26,6 +26,7 @@
       ghostty.enable = lib.mkEnableOption "ghostty terminal config";
       aliases.enable = lib.mkEnableOption "shared shell aliases";
       packages.enable = lib.mkEnableOption "core CLI nix packages";
+      cloud.enable = lib.mkEnableOption "cloud/k8s/IaC/DevSecOps tooling (work)";
       homebrew.enable = lib.mkEnableOption "Homebrew (nix-homebrew) + casks/brews";
     };
   };

@@ -6,7 +6,9 @@
       config = lib.mkIf config.zix.profiles.work.enable {
         zix = {
           git.enable = lib.mkDefault true;
-          # work-specific features added later
+          cloud.enable = lib.mkDefault true;
+          # work Homebrew (homebrewWork) and permitted-insecure (nixpkgsWork) gate
+          # directly on profiles.work.enable.
         };
       };
     };
