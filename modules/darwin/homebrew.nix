@@ -43,6 +43,10 @@
                 name = "Azure/kubelogin";
                 trusted = true;
               }
+              {
+                name = "agavra/tap";
+                trusted = true;
+              }
             ];
 
             brews = [
@@ -54,6 +58,7 @@
               "hunk"
               "danielfoehrkn/switch/switch"
               "Azure/kubelogin/kubelogin"
+              "agavra/tap/tuicr"
             ];
 
             casks = [
