@@ -44,6 +44,7 @@ in
   # `osConfig.zix.<f>.enable`.
   flake.modules.homeManager.base = {
     imports = [
+      homeManager.dotfiles
       homeManager.git
       homeManager.direnv
       homeManager.cli

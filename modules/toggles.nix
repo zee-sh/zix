@@ -28,6 +28,31 @@
       packages.enable = lib.mkEnableOption "core CLI nix packages";
       cloud.enable = lib.mkEnableOption "cloud/k8s/IaC/DevSecOps tooling (work)";
       homebrew.enable = lib.mkEnableOption "Homebrew (nix-homebrew) + casks/brews";
+
+      # Mode (not a feature): edit managed dotfiles live without a rebuild.
+      # Per-dotfile: zix.dotfiles.mutable.<name> = true;  global: mutableByDefault.
+      dotfiles.mutableByDefault = lib.mkEnableOption "making all managed dotfiles editable (out-of-store)";
+      dotfiles.mutable = lib.mkOption {
+        type = lib.types.attrsOf lib.types.bool;
+        default = { };
+        example = {
+          zellij = true;
+          ghostty = false;
+        };
+        description = ''
+          Per-dotfile mutability, keyed by the name passed to dotfiles.make
+          (e.g. "zellij", "ghostty", "nushell"). Overrides mutableByDefault.
+        '';
+      };
+      dotfiles.path = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        example = "/Users/you/projects/personal/zix";
+        description = ''
+          Absolute path to your live zix checkout on this machine. Required when any
+          dotfile is mutable (mkOutOfStoreSymlink needs it); set it in the host.
+        '';
+      };
     };
   };
 }
