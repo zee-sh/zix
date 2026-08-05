@@ -1,0 +1,31 @@
+# herdr — managed by zix (modules/homeManager/herdr.nix).
+#
+# This file is a read-only symlink into the nix store. herdr's in-app Settings
+# cannot write to it; change values here and run `darwin-rebuild switch`.
+#
+# One config file is shared by every herdr session (default/work and personal
+# alike) — named sessions get their own sockets, panes, and state, but not their
+# own config. Session state lives in ~/.config/herdr/sessions/<name>/.
+
+onboarding = false
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+[ui.toast]
+delivery = "system"
+
+[experimental]
+# Replays recent pane contents after a server restart. Pane output is written to
+# <session-dir>/session-history.json — one file per session, so work and personal
+# screens never commingle. Treat those files like shell history.
+pane_history = true
+switch_ascii_input_source_in_prefix = true
+
+[advanced]
+# Per-pane scrollback buffer, in bytes (default ~10 MB). Bumped to 50 MB.
+scrollback_limit_bytes = 50000000

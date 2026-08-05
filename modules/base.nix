@@ -54,6 +54,7 @@ in
       homeManager.tmux
       homeManager.zellij
       homeManager.ghostty
+      homeManager.herdr
       homeManager.aliases
       homeManager.packages
     ];

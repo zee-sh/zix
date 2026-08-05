@@ -24,6 +24,7 @@
       tmux.enable = lib.mkEnableOption "tmux";
       zellij.enable = lib.mkEnableOption "zellij";
       ghostty.enable = lib.mkEnableOption "ghostty terminal config";
+      herdr.enable = lib.mkEnableOption "herdr config + personal session bootstrap";
       aliases.enable = lib.mkEnableOption "shared shell aliases";
       packages.enable = lib.mkEnableOption "core CLI nix packages";
       cloud.enable = lib.mkEnableOption "cloud/k8s/IaC/DevSecOps tooling (work)";
