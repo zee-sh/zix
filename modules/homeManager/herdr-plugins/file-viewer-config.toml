@@ -1,0 +1,13 @@
+# herdr-file-viewer plugin config — managed by zix (modules/homeManager/herdr.nix).
+#
+# Read-only store symlink at
+#   ~/.config/herdr/plugins/config/herdr-file-viewer/config.toml
+# Read on relaunch (no in-app editor). The plugin BINARY is installed imperatively
+# once per machine: `herdr plugin install smarzban/herdr-file-viewer`.
+#
+# All keys are optional; the viewer follows the terminal theme and delegates
+# rendering to glow/delta/bat when present. Left at defaults — uncomment to change.
+# See config.example.toml in the plugin repo for the full key list.
+
+# editor = "nvim"       # receives the file path as final arg; falls back to $EDITOR
+# changed_only = false  # start the tree filtered to changed files

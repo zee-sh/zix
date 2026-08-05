@@ -90,7 +90,15 @@
     in
     {
       config = lib.mkIf osConfig.zix.herdr.enable {
-        xdg.configFile."herdr/config.toml".source = ./herdr-config.toml;
+        xdg.configFile."herdr/config.toml".source =
+          config.dotfiles.make "herdr" "modules/homeManager/herdr-config.toml";
+
+        # Plugin configs. The plugin BINARIES are installed imperatively, once per
+        # machine (`herdr plugin install <repo>`); nix only manages their config.
+        xdg.configFile."herdr/plugins/config/persiyanov.reviewr/config.toml".source =
+          config.dotfiles.make "herdr" "modules/homeManager/herdr-plugins/reviewr-config.toml";
+        xdg.configFile."herdr/plugins/config/herdr-file-viewer/config.toml".source =
+          config.dotfiles.make "herdr" "modules/homeManager/herdr-plugins/file-viewer-config.toml";
 
         home.packages = [ herdr-personal ];
 

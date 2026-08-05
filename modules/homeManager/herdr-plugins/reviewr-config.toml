@@ -1,0 +1,16 @@
+# herdr-reviewr plugin config — managed by zix (modules/homeManager/herdr.nix).
+#
+# Read-only store symlink at
+#   ~/.config/herdr/plugins/config/persiyanov.reviewr/config.toml
+# reviewr re-reads it on every refresh/toggle. The plugin BINARY is installed
+# imperatively once per machine: `herdr plugin install persiyanov/herdr-reviewr`.
+#
+# Any unknown key / wrong type invalidates the WHOLE file (reviewr shows a config
+# error until fixed), so keep this minimal and valid.
+
+theme = "catppuccin"
+base_branches = ["main", "master"]
+default_scope = "branch"
+# Auto-open a review pane on worktree.created. Left off — opt in per worktree via
+# the prefix+r toggle (see [[keys.command]] in herdr-config.toml).
+auto_open = false
