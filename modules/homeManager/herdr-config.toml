@@ -9,6 +9,34 @@
 
 onboarding = false
 
+[keys]
+# Prefix key to enter prefix mode (herdr default: "ctrl+b"). Using "ctrl+s"
+# (tmux-style). Note: ctrl+s is XOFF flow-control in most ttys — herdr captures
+# the prefix so it normally won't reach the terminal, but if output ever freezes,
+# add `stty -ixon` to your shell init.
+prefix = "ctrl+s"
+
+# Plugin toggles. The plugin BINARIES are installed imperatively once per machine
+# (`herdr plugin install <repo>`); these bindings just invoke their toggle actions.
+# reviewr (persiyanov/herdr-reviewr): review the agent's diff, comment, send back.
+[[keys.command]]
+key = "prefix+r"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+
+# file-viewer (smarzban/herdr-file-viewer): git-aware read-only repo browser.
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer"
+
+[update]
+# Disable auto version checks so the client doesn't jump protocol ahead of the
+# running server (caused repeated attach failures). Update manually with
+# `herdr update`, then restart the server.
+version_check = false
+manifest_check = false
+
 [theme]
 name = "catppuccin"
 auto_switch = false
