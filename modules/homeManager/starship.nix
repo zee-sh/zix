@@ -11,7 +11,7 @@
           enableNushellIntegration = true;
           settings = {
             format = "$directory$character";
-            right_format = "$git_branch$git_commit$git_state$git_status$kubernetes$aws$pulumi$nix_shell$cmd_duration$shlvl";
+            right_format = "\${custom.git_worktree}$git_branch$git_commit$git_state$git_status$kubernetes\${custom.aws_profile}$aws$azure$pulumi$nix_shell$cmd_duration$shlvl";
 
             add_newline = false;
             command_timeout = 1000;
@@ -41,6 +41,19 @@
               style = "bold green";
               format = "[$path ]($style)[$read_only]($read_only_style)";
               truncation_length = 3;
+            };
+
+            # Name of the linked git worktree; silent in the main worktree.
+            # A linked worktree's git-dir is <repo>/.git/worktrees/<name>, so the
+            # basename is the worktree name whenever git-dir != git-common-dir.
+            custom.git_worktree = {
+              description = "Current git worktree name (linked worktrees only)";
+              require_repo = true;
+              when = ''[ "$(git rev-parse --path-format=absolute --git-dir)" != "$(git rev-parse --path-format=absolute --git-common-dir)" ]'';
+              command = ''basename "$(git rev-parse --git-dir)"'';
+              format = "[$symbol$output]($style) ";
+              symbol = "󰙅 ";
+              style = "bold purple";
             };
 
             nix_shell = {
@@ -86,7 +99,34 @@
                   style = "bright-red";
                   symbol = "🚨";
                 }
+                # AKS prod clusters — same warning as the prod contexts above
+                {
+                  context_pattern = "aks-.*-prod-.*";
+                  style = "bright-red";
+                  symbol = "🚨";
+                }
               ];
+            };
+
+            # AWS profile, shortened by pattern so no account names live in this repo.
+            # "<svc>-<env>-<region>-<role>" -> "<svc>-<env>"; multi-word prefixes become
+            # initials ("cloud-controlplane-prod-use1-admin" -> "cc-prod"). Region is
+            # rendered separately by the aws module above.
+            custom.aws_profile = {
+              description = "Shortened AWS profile name";
+              when = ''[ -n "$AWS_PROFILE" ]'';
+              command = ''printf '%s' "$AWS_PROFILE" | awk -F- '{ env=""; n=0; for (i=1; i<=NF; i++) if ($i ~ /^(prod|production|staging|stage|stg|dev|test|qa|sandbox)$/) { env=$i; n=i-1; break } if (env == "") { print; exit } if (n == 0) { print env; exit } if (n == 1) { pre=$1 } else { pre=""; for (j=1; j<=n; j++) pre = pre substr($j,1,1) } print pre "-" env }' '';
+              format = " [$symbol$output]($style)";
+              symbol = " ";
+              style = "bold yellow";
+            };
+
+            # Azure subscription (name comes from ~/.azure/azureProfile.json)
+            azure = {
+              format = " [$symbol$subscription]($style) ";
+              symbol = "󰠅 ";
+              style = "bold sapphire";
+              disabled = false;
             };
 
             pulumi = {
@@ -110,8 +150,9 @@
             };
 
             gcloud.format = "on [$symbol$active(/$project)(\\($region\\))]($style)";
+            # Profile name comes from custom.aws_profile below; this renders only the region.
             aws = {
-              format = " [$symbol$profile(\\($region\\))]($style) ";
+              format = "[(\\($region\\))]($style) ";
               symbol = " ";
               region_aliases = {
                 us-east-1 = "use1";
