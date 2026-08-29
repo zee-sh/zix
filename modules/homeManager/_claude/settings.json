@@ -1,5 +1,6 @@
 {
   "includeCoAuthoredBy": false,
+  "theme": "dark",
   "permissions": {
     "allow": [
       "Bash(aws ec2 describe-security-groups:*)",
@@ -8,9 +9,8 @@
       "Bash(aws eks describe-nodegroup:*)",
       "Bash(aws eks list-clusters:*)",
       "Bash(aws eks list-nodegroups:*)",
-      "Bash(find:*)",
       "Bash(git add:*)",
-      "Bash(git checkout:*)",
+      "Bash(git checkout -b:*)",
       "Bash(grep:*)",
       "Bash(kubectl describe:*)",
       "Bash(kubectl get:*)",
@@ -27,10 +27,7 @@
       "Bash(pulumi config get:*)",
       "Bash(pulumi config set:*)",
       "Bash(pulumi stack:*)",
-      "Bash(PULUMI_DEBUG_PROMISE_LEAKS=1 pulumi preview -s infra-euw1)",
-      "Bash(PULUMI_DEBUG_PROMISE_LEAKS=1 pulumi preview -s staging-use1)",
       "Bash(rg:*)",
-      "Bash(timeout:*)",
       "mcp__awslabs_aws-documentation-mcp-server__read_documentation",
       "mcp__awslabs_aws-documentation-mcp-server__search_documentation",
       "mcp__pulumi__pulumi-cli-preview",
@@ -48,7 +45,11 @@
       "Bash(rtk kubectl patch:*)",
       "Bash(rtk kubectl delete:*)",
       "Bash(kubectl:* patch:*)",
-      "Bash(kubectl:* delete:*)"
+      "Bash(kubectl:* delete:*)",
+      "Bash(git checkout -- :*)",
+      "Bash(git checkout .:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -fd:*)"
     ],
     "defaultMode": "default"
   },
