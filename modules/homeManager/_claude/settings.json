@@ -3,9 +3,9 @@
   "theme": "dark",
   "permissions": {
     "allow": [
+      "Bash(aws ec2 describe-instances:*)",
       "Bash(aws ec2 describe-security-groups:*)",
       "Bash(aws eks describe-addon:*)",
-      "Bash(aws ec2 describe-instances:*)",
       "Bash(aws eks describe-nodegroup:*)",
       "Bash(aws eks list-clusters:*)",
       "Bash(aws eks list-nodegroups:*)",
@@ -16,25 +16,24 @@
       "Bash(kubectl get:*)",
       "Bash(kubectl logs:*)",
       "Bash(kubectl top:*)",
-      "Bash(kubectl wait:*)",
       "Bash(kubectl version:*)",
+      "Bash(kubectl wait:*)",
       "Bash(ls:*)",
-      "Bash(make:*)",
-      "Bash(node:*)",
-      "Bash(npm run build:*)",
       "Bash(npm view:*)",
       "Bash(npx tsc:*)",
       "Bash(pulumi config get:*)",
       "Bash(pulumi config set:*)",
-      "Bash(pulumi stack:*)",
+      "Bash(pulumi stack ls:*)",
+      "Bash(pulumi stack output:*)",
+      "Bash(pulumi stack select:*)",
       "Bash(rg:*)",
+      "WebFetch(domain:aws.amazon.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.pulumi.com)",
       "mcp__awslabs_aws-documentation-mcp-server__read_documentation",
       "mcp__awslabs_aws-documentation-mcp-server__search_documentation",
       "mcp__pulumi__pulumi-cli-preview",
-      "mcp__sequential-thinking__sequentialthinking",
-      "WebFetch(domain:aws.amazon.com)",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:www.pulumi.com)"
+      "mcp__sequential-thinking__sequentialthinking"
     ],
     "deny": [
       "Bash(pulumi destroy:*)",
@@ -44,12 +43,12 @@
       "Bash(kubectl delete:*)",
       "Bash(rtk kubectl patch:*)",
       "Bash(rtk kubectl delete:*)",
-      "Bash(kubectl:* patch:*)",
-      "Bash(kubectl:* delete:*)",
       "Bash(git checkout -- :*)",
       "Bash(git checkout .:*)",
       "Bash(git reset --hard:*)",
-      "Bash(git clean -fd:*)"
+      "Bash(git clean -fd:*)",
+      "Bash(pulumi stack rm:*)",
+      "Bash(pulumi stack import:*)"
     ],
     "defaultMode": "default"
   },
@@ -60,7 +59,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "rtk hook claude"
+            "command": "command -v rtk >/dev/null 2>&1 && rtk hook claude || true"
           }
         ]
       }
@@ -71,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/hooks/herdr-agent-state.sh session",
+            "command": "[ -f ~/.claude/hooks/herdr-agent-state.sh ] && bash ~/.claude/hooks/herdr-agent-state.sh session || true",
             "timeout": 10
           }
         ]

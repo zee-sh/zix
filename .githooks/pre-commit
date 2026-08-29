@@ -6,40 +6,42 @@
 set -euo pipefail
 
 # Nothing to do if nix is unavailable (e.g. a fresh machine mid-bootstrap).
-# Better to let the commit through than to block work CI will catch anyway.
 if ! command -v nix >/dev/null 2>&1; then
   exit 0
 fi
 
-# Skip when no .nix file is staged; most commits here touch lua, md or yaml.
 staged_nix=$(git diff --cached --name-only --diff-filter=ACM | grep '\.nix$' || true)
 if [ -z "$staged_nix" ]; then
   exit 0
 fi
 
-# Exit status ignored on purpose: it reports on the working tree, but what
-# matters is whether the *staged* content is formatted. Trusting the tree lets
-# a second attempt through, once a prior run fixed the file but not the index.
-nix run --inputs-from . nixpkgs#nixfmt-tree -- --ci >/dev/null 2>&1 || true
+# Check the staged blob, not the working tree. Formatting the tree and diffing
+# gives a false positive on any unrelated unstaged edit (breaking `git add -p`)
+# and misses staged content whenever the tree is already clean.
+fmt() { nix run --inputs-from . nixpkgs#nixfmt -- --check - >/dev/null 2>&1; }
 
-# A staged .nix file that now has unstaged changes means the formatter rewrote
-# it, i.e. what is about to be committed is not formatted.
+# Fail loudly if the formatter cannot run — offline, cold cache, bad input.
+# Swallowing that would silently turn this hook into a no-op.
+if ! printf '{ }\n' | fmt; then
+  echo "pre-commit: cannot run the formatter (offline? cold cache?)." >&2
+  echo "Fix it, or bypass once with: git commit --no-verify" >&2
+  exit 1
+fi
+
 unformatted=""
-for f in $staged_nix; do
-  if ! git diff --quiet -- "$f" 2>/dev/null; then
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  if ! git cat-file blob ":$f" | fmt; then
     unformatted="$unformatted  $f"$'\n'
   fi
-done
+done <<<"$staged_nix"
 
 if [ -n "$unformatted" ]; then
   echo
-  echo "pre-commit: staged nix files are not formatted."
-  echo "They have been reformatted in place — review and re-stage:"
+  echo "pre-commit: these staged files are not formatted:"
   echo
   printf '%s' "$unformatted"
-  echo
-  echo "  git add -u && git commit"
-  echo
-  echo "To bypass this check once: git commit --no-verify"
+  echo "Run 'just fmt', re-stage, and commit again."
+  echo "To bypass once: git commit --no-verify"
   exit 1
 fi
