@@ -1,27 +1,7 @@
 {
-  # Claude Code's status line. The script shells out to `starship prompt` and
-  # `starship prompt --right` and appends session state (model, context, cost,
-  # rate limits, PR link), so the shell prompt and Claude's status bar stay in
-  # sync from one starship config — see modules/homeManager/starship.nix.
-  #
-  # Its dependencies all come from zix already: starship, jq (packages), git and
-  # gh (git). Nothing here is machine-specific and the script holds no secrets.
-  #
-  # settings.json is managed here too, which means agent-sync must stop syncing it
-  # — two owners writing one file will fight.
-  #
-  # The committed copy keeps only the hooks we own: `rtk hook claude` (PreToolUse)
-  # and herdr's SessionStart. Hooks injected by third-party tools are deliberately
-  # left out — they re-add themselves on machines where those tools are installed,
-  # and each one is self-guarding, so it no-ops where they are not.
-  #
-  # Caveat worth knowing: settings.json is not a hand-authored file. Claude writes
-  # to it (/config, permission grants) and those tools rewrite it on update. So keep
-  # this dotfile MUTABLE on any host you actually work on — an out-of-store symlink
-  # lets those writes land in the checkout, where you review and commit them. On an
-  # immutable host the file is read-only and every such write fails.
-  #   zix.dotfiles.mutable.claude-settings = true;   # plus zix.dotfiles.path
-  # m2air gets this via mutableByDefault.
+  # Claude Code's status line (shells out to starship, so it matches the prompt)
+  # and settings.json. Keep settings.json MUTABLE: Claude and herdr both write to
+  # it, and an immutable host makes every such write fail.
   flake.modules.homeManager.claude =
     {
       config,
@@ -31,18 +11,19 @@
     }:
     {
       config = lib.mkIf osConfig.zix.claude.enable {
-        # No `executable = true` here. It is incompatible with a mutable dotfile:
-        # home-manager copies (rather than symlinks) any file needing an exec bit,
-        # and the mutable source is an out-of-store symlink into the checkout,
-        # which the build sandbox cannot read — the build fails with
-        #   cp: cannot stat '...hm_statuslinecommand.sh': Permission denied
-        # The bit is not needed anyway: settings.json runs the script as
-        # `bash ~/.claude/statusline-command.sh`.
+        # No `executable = true`: home-manager copies rather than symlinks files
+        # needing an exec bit, and it cannot read the out-of-store source.
+        # Not needed anyway — settings.json runs this via `bash`.
         home.file.".claude/statusline-command.sh".source =
           config.dotfiles.make "claude-statusline" "modules/homeManager/_claude/statusline-command.sh";
 
         home.file.".claude/settings.json".source =
           config.dotfiles.make "claude-settings" "modules/homeManager/_claude/settings.json";
+
+        # Claude Code is not a nix package; its installer drops `claude` in
+        # ~/.local/bin and patches ~/.zshrc, which home-manager owns and
+        # overwrites. Without this, fresh shells get "command not found".
+        home.sessionPath = [ "$HOME/.local/bin" ];
       };
     };
 }
