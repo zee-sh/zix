@@ -120,7 +120,7 @@
           yt = "yt-dlp";
 
           # Nix
-          xn = "nix run nix-darwin --extra-experimental-features nix-command --extra-experimental-features flakes -- switch --flake .";
+          xn = "sudo nix run nix-darwin --extra-experimental-features nix-command --extra-experimental-features flakes -- switch --flake .";
           xx = "sudo darwin-rebuild switch --flake .";
           ngc = "nix store gc -v";
           ndev = "nix develop";
