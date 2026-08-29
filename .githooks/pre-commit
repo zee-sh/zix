@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+#
+# Formatting gate, run before each commit.
+#
+# Enable with `just hooks` (sets core.hooksPath to this directory). Lives in the
+# repo rather than .git/hooks so it is versioned and shared across machines.
+#
+# Formatting only — deliberately not the eval checks from `just ci`. Those take
+# tens of seconds and would make committing painful; CI still runs them.
+set -euo pipefail
+
+# Nothing to do if nix is unavailable (e.g. a fresh machine mid-bootstrap).
+# Better to let the commit through than to block work CI will catch anyway.
+if ! command -v nix >/dev/null 2>&1; then
+  exit 0
+fi
+
+# Skip when no .nix file is staged; most commits here touch lua, md or yaml.
+staged_nix=$(git diff --cached --name-only --diff-filter=ACM | grep '\.nix$' || true)
+if [ -z "$staged_nix" ]; then
+  exit 0
+fi
+
+# Format the working tree. --ci implies --fail-on-change, but its exit status is
+# deliberately ignored: it reports on the working tree, and what matters here is
+# whether the *staged* content is formatted. Checking the tree instead would let
+# unformatted staged content through on a second attempt, once a previous run
+# had already fixed the file on disk while the index still held the old version.
+nix run --inputs-from . nixpkgs#nixfmt-tree -- --ci >/dev/null 2>&1 || true
+
+# A staged .nix file that now has unstaged changes means the formatter rewrote
+# it, i.e. what is about to be committed is not formatted.
+unformatted=""
+for f in $staged_nix; do
+  if ! git diff --quiet -- "$f" 2>/dev/null; then
+    unformatted="$unformatted  $f"$'\n'
+  fi
+done
+
+if [ -n "$unformatted" ]; then
+  echo
+  echo "pre-commit: staged nix files are not formatted."
+  echo "They have been reformatted in place — review and re-stage:"
+  echo
+  printf '%s' "$unformatted"
+  echo
+  echo "  git add -u && git commit"
+  echo
+  echo "To bypass this check once: git commit --no-verify"
+  exit 1
+fi
