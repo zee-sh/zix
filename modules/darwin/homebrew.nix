@@ -189,7 +189,6 @@
               "m-cli" # https://github.com/rgcr/m-cli - Swiss Army knife for macOS
               "mas" # https://github.com/mas-cli/mas - Mac App Store CLI
               "cowsay" # https://cowsay.diamonds - classic cowsay
-              "rtk" # https://www.rtk-ai.app/ - CLI proxy to minimize LLM token use
             ];
           };
         })

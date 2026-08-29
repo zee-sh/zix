@@ -1,7 +1,8 @@
 # herdr — managed by zix (modules/homeManager/herdr.nix).
 #
-# This file is a read-only symlink into the nix store. herdr's in-app Settings
-# cannot write to it; change values here and run `darwin-rebuild switch`.
+# Where this file lives depends on the host. With zix.dotfiles mutable it is a
+# symlink into the checkout — edit it directly, no rebuild. Otherwise it is a
+# read-only store copy: edit it here and run `darwin-rebuild switch`.
 #
 # One config file is shared by every herdr session (default/work and personal
 # alike) — named sessions get their own sockets, panes, and state, but not their

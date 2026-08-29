@@ -38,10 +38,14 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
 
       # Catches broken option references, bad merges and module wiring typos
-      # that formatting alone would not. Stops at the derivation; it does not
-      # build the closure, so no aarch64-darwin builder is required.
-      - name: Evaluate m2air
-        run: nix eval --raw .#darwinConfigurations.m2air.system.drvPath
-
-      - name: Evaluate m4max
-        run: nix eval --raw .#darwinConfigurations.m4max.system.drvPath
+      # that formatting alone would not. Hosts are discovered rather than listed,
+      # so a fork deleting or renaming one does not get a red CI run.
+      - name: Evaluate all hosts
+        run: |
+          hosts=$(nix eval --json .#darwinConfigurations --apply builtins.attrNames | tr -d '[]"' | tr ',' ' ')
+          test -n "$hosts" || { echo "no darwinConfigurations found"; exit 1; }
+          for h in $hosts; do
+            echo "::group::eval $h"
+            nix eval --raw ".#darwinConfigurations.$h.system.drvPath"
+            echo "::endgroup::"
+          done

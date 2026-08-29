@@ -1,6 +1,6 @@
 # zix
 
-Dendritic nix-darwin config for zeeshans' Macs. Two hosts: `m2air` (personal),
+Opinionated dendritic nix-darwin config. Two hosts: `m2air` (personal),
 `m4max` (personal + work).
 
 ## Layout

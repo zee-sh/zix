@@ -21,7 +21,8 @@
       # Workspaces the personal session should always have. Add a line here and
       # rerun `herdr-personal` on each Mac; existing workspaces are left alone.
       personalWorkspaces = {
-        "zix" = "${home}/projects/personal/zix";
+        "zix" = osConfig.profile.checkoutPath;
+        # Author-specific; drop or replace this on a fork.
         "agent-sync" = "${home}/projects/personal/agent-sync";
       };
 
