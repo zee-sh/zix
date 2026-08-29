@@ -66,3 +66,21 @@ call — hand that command to the user.
 Work lands via PR off a `feat/` branch; CI runs `fmt` and `eval` for both hosts.
 This repo is **private**, so Actions minutes are billed — macOS runners cost 10×
 Linux, which is why both jobs run on `ubuntu-latest`.
+
+## Working here
+
+**Verify claims before making them.** This config's failure modes are invisible
+to evaluation: a flake can evaluate and still fail on activation, and a
+formatting change can look safe but alter the closure. Check the exit code, diff
+the store path, resolve the symlink. Most of the real bugs found here — an
+unpinned `fetchgit`, a mutable dotfile that could not be executable, a
+pre-commit hook that read the working tree instead of the index — passed every
+check that was not the specific one that mattered.
+
+**Keep diffs surgical.** Pre-existing drift — unformatted files, stale docs —
+stays out of a feature PR unless asked. Mixing it in makes the real change
+unreviewable.
+
+**Say when something looks wrong.** A derivation named for the wrong version, a
+warning that survives its fix, a check that passes suspiciously fast: surface it
+and confirm, rather than assuming either way.
