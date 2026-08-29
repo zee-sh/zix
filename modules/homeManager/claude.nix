@@ -2,6 +2,10 @@
   # Claude Code's status line (shells out to starship, so it matches the prompt)
   # and settings.json. Keep settings.json MUTABLE: Claude and herdr both write to
   # it, and an immutable host makes every such write fail.
+  #
+  # User settings are the WEAKEST layer and merge with project ones, so keep this
+  # file to stable globals. Denies belong here (deny is absolute at every layer);
+  # per-project allows belong in that repo's .claude/settings.json.
   flake.modules.homeManager.claude =
     {
       config,
