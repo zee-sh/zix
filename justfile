@@ -24,18 +24,12 @@ check:
 fmt:
     nix fmt
 
-# Enable the versioned git hooks in .githooks (one-time, per clone).
-# Currently just a pre-commit formatting gate.
+# Enable the versioned git hooks in .githooks (one-time, per clone)
 hooks:
     git config core.hooksPath .githooks
     @echo "hooks enabled: $(git config core.hooksPath)"
 
-# Run exactly what CI runs, locally. Same commands as .github/workflows/ci.yml,
-# so a green run here means a green run there — worth doing before pushing,
-# since this repo is private and Actions minutes are billed.
-#
-# Note the formatter runs in --ci mode: it rewrites unformatted files and *then*
-# exits non-zero, so a failure leaves the fixes already applied in your tree.
+# Run the CI checks locally (fmt + eval); fmt rewrites files before failing
 ci:
     nix run --inputs-from . nixpkgs#nixfmt-tree -- --ci
     nix eval --raw .#darwinConfigurations.m2air.system.drvPath

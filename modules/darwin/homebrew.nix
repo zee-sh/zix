@@ -62,6 +62,9 @@
               "Azure/kubelogin/kubelogin" # https://github.com/Azure/kubelogin - Azure auth (exec) plugin for kubectl
               # agent tooling
               "herdr" # https://herdr.dev - agent multiplexer for the terminal
+              # rtk is in nixpkgs but 0.43.0 there fails to build (-D warnings vs dead
+              # code in its test target); brew ships a newer bottled release.
+              "rtk" # https://github.com/rtk-ai/rtk - CLI proxy that compresses command output for LLM agents
               "hunk" # https://hunk.dev/ - review-first terminal diff viewer
               "agavra/tap/tuicr" # https://github.com/agavra/tuicr - terminal UI for code reviews
             ];

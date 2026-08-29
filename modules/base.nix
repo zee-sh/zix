@@ -54,6 +54,7 @@ in
       homeManager.tmux
       homeManager.zellij
       homeManager.ghostty
+      homeManager.claude
       homeManager.neovim
       homeManager.herdr
       homeManager.aliases

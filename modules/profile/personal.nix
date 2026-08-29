@@ -15,6 +15,7 @@
           tmux.enable = lib.mkDefault true;
           zellij.enable = lib.mkDefault true;
           ghostty.enable = lib.mkDefault true;
+          claude.enable = lib.mkDefault true;
           neovim.enable = lib.mkDefault true;
           herdr.enable = lib.mkDefault true;
           aliases.enable = lib.mkDefault true;

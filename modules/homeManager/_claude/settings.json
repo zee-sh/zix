@@ -1,0 +1,86 @@
+{
+  "includeCoAuthoredBy": false,
+  "theme": "dark",
+  "permissions": {
+    "allow": [
+      "Bash(aws ec2 describe-security-groups:*)",
+      "Bash(aws eks describe-addon:*)",
+      "Bash(aws ec2 describe-instances:*)",
+      "Bash(aws eks describe-nodegroup:*)",
+      "Bash(aws eks list-clusters:*)",
+      "Bash(aws eks list-nodegroups:*)",
+      "Bash(git add:*)",
+      "Bash(git checkout -b:*)",
+      "Bash(grep:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl top:*)",
+      "Bash(kubectl wait:*)",
+      "Bash(kubectl version:*)",
+      "Bash(ls:*)",
+      "Bash(make:*)",
+      "Bash(node:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm view:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pulumi config get:*)",
+      "Bash(pulumi config set:*)",
+      "Bash(pulumi stack:*)",
+      "Bash(rg:*)",
+      "mcp__awslabs_aws-documentation-mcp-server__read_documentation",
+      "mcp__awslabs_aws-documentation-mcp-server__search_documentation",
+      "mcp__pulumi__pulumi-cli-preview",
+      "mcp__sequential-thinking__sequentialthinking",
+      "WebFetch(domain:aws.amazon.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.pulumi.com)"
+    ],
+    "deny": [
+      "Bash(pulumi destroy:*)",
+      "Bash(pulumi up:*)",
+      "Bash(pulumi state:*)",
+      "Bash(kubectl patch:*)",
+      "Bash(kubectl delete:*)",
+      "Bash(rtk kubectl patch:*)",
+      "Bash(rtk kubectl delete:*)",
+      "Bash(kubectl:* patch:*)",
+      "Bash(kubectl:* delete:*)",
+      "Bash(git checkout -- :*)",
+      "Bash(git checkout .:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -fd:*)"
+    ],
+    "defaultMode": "default"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/herdr-agent-state.sh session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  },
+  "tui": "fullscreen"
+}
