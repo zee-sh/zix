@@ -2,7 +2,12 @@
   # nushell (secondary shell). atuin/zoxide/starship wire their nushell
   # integrations automatically when those features are also enabled.
   flake.modules.homeManager.nushell =
-    { config, osConfig, lib, ... }:
+    {
+      config,
+      osConfig,
+      lib,
+      ...
+    }:
     {
       config = lib.mkIf osConfig.zix.nushell.enable {
         programs.nushell = {

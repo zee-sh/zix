@@ -1,6 +1,11 @@
 {
   flake.modules.homeManager.zellij =
-    { config, osConfig, lib, ... }:
+    {
+      config,
+      osConfig,
+      lib,
+      ...
+    }:
     {
       config = lib.mkIf osConfig.zix.zellij.enable {
         programs.zellij.enable = true;
