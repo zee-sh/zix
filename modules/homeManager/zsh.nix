@@ -89,7 +89,8 @@
               file = "fzf-tab.zsh";
               src = pkgs.fetchgit {
                 url = "https://github.com/Aloxaf/fzf-tab";
-                sha256 = "sha256-zc9Sc1WQIbJ132hw73oiS1ExvxCRHagi6vMkCLd4ZhI=";
+                rev = "24105b15714bfec37989ed5c5b6e60f572253019";
+                sha256 = "sha256-YhTSu0P7mFlVx1zBvbT0jNstkamcZHhPYJHKMAHgyuM=";
               };
             }
             {
@@ -97,6 +98,7 @@
               file = "auto-notify.plugin.zsh";
               src = pkgs.fetchgit {
                 url = "https://github.com/MichaelAquilina/zsh-auto-notify";
+                rev = "b51c934d88868e56c1d55d0a2a36d559f21cb2ee";
                 sha256 = "sha256-s3TBAsXOpmiXMAQkbaS5de0t0hNC1EzUUb0ZG+p9keE=";
               };
             }
@@ -105,7 +107,8 @@
               file = "zsh-ssh.zsh";
               src = pkgs.fetchgit {
                 url = "https://github.com/sunlei/zsh-ssh";
-                sha256 = "sha256-lc3fRcM1IazuDRvlOmPEiHk5ddWalqsiNNKcOj8eUSs=";
+                rev = "cee8c2a119dd53f01dc6aef1ce79faa783aa2e3f";
+                sha256 = "sha256-1yJasYai4+T8j76lCvIhSFh4fm7VUoF4F4E+v8WSr2I=";
               };
             }
             {
@@ -113,7 +116,8 @@
               file = "plugins/sudo/sudo.plugin.zsh";
               src = pkgs.fetchgit {
                 url = "https://github.com/ohmyzsh/ohmyzsh";
-                sha256 = "sha256-2EEoYU3uyHd/fT8SWnj79O/I9G+ULh2xYj0p46Mh904=";
+                rev = "b37dd49ca5bfe0d99b35607637152cb8cc8b29d7";
+                sha256 = "sha256-FFalS7WcZ75x4VyJqu5XWnO4AI2a/yBLfFso+caKhYg=";
                 sparseCheckout = [ "plugins/sudo" ];
               };
             }
