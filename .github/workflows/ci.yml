@@ -11,11 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Both jobs run on ubuntu-latest deliberately. This repo is private, so Actions
-# minutes count against the account quota and macOS runners bill at 10x the rate
-# of Linux. Neither check needs macOS: formatting is platform independent, and
-# `darwinConfigurations` is a top-level flake output, so it evaluates from Linux
-# without instantiating anything for the host platform.
+# ubuntu-latest deliberately: this repo is private and macOS runners bill at 10x.
+# Neither check needs macOS — formatting is platform independent, and
+# darwinConfigurations is a top-level output that evaluates fine from Linux.
 jobs:
   fmt:
     name: nix fmt
@@ -25,16 +23,9 @@ jobs:
 
       - uses: DeterminateSystems/nix-installer-action@main
 
-      # Deliberately not `nix fmt`: `formatter` is a perSystem output and
-      # modules/systems.nix declares only aarch64-darwin, so on Linux that fails
-      # with "does not provide attribute 'formatter.x86_64-linux'". Invoking the
-      # formatter package directly sidesteps that. `--inputs-from .` resolves it
-      # from the flake's own pinned nixpkgs, so CI and local `nix fmt` run the
-      # same version.
-      #
-      # --ci implies --fail-on-change and --no-cache: treefmt formats into the
-      # ephemeral checkout and exits non-zero if anything changed, so
-      # unformatted code fails rather than being silently rewritten.
+      # Not `nix fmt`: formatter is a perSystem output and systems.nix declares
+      # only aarch64-darwin, so it is absent on Linux. --inputs-from . keeps CI
+      # on the same pinned nixpkgs as local. --ci implies --fail-on-change.
       - name: Check formatting
         run: nix run --inputs-from . nixpkgs#nixfmt-tree -- --ci
 

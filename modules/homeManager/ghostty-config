@@ -22,10 +22,9 @@ cursor-text = 11111b
 selection-background = 353749
 selection-foreground = cdd6f4
 
-# Copy selected text straight to the system clipboard, so a mouse selection is
-# ready for Cmd-V. Note `true` is NOT enough on macOS: it prefers the *selection*
-# clipboard, which macOS has no real equivalent of, so Cmd-V would not see it.
-# `clipboard` writes to both.
+# Selection goes to the system clipboard, ready for Cmd-V. `true` is not enough
+# on macOS — it prefers the selection clipboard, which macOS lacks. `clipboard`
+# writes to both.
 copy-on-select = clipboard
 
 # Font

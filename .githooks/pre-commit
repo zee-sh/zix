@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 #
-# Formatting gate, run before each commit.
-#
-# Enable with `just hooks` (sets core.hooksPath to this directory). Lives in the
-# repo rather than .git/hooks so it is versioned and shared across machines.
-#
-# Formatting only — deliberately not the eval checks from `just ci`. Those take
-# tens of seconds and would make committing painful; CI still runs them.
+# Formatting gate. Enable with `just hooks`. Versioned here rather than in
+# .git/hooks so it is shared. Formatting only — the eval checks are too slow
+# to run per commit, and CI covers them.
 set -euo pipefail
 
 # Nothing to do if nix is unavailable (e.g. a fresh machine mid-bootstrap).
@@ -21,11 +17,9 @@ if [ -z "$staged_nix" ]; then
   exit 0
 fi
 
-# Format the working tree. --ci implies --fail-on-change, but its exit status is
-# deliberately ignored: it reports on the working tree, and what matters here is
-# whether the *staged* content is formatted. Checking the tree instead would let
-# unformatted staged content through on a second attempt, once a previous run
-# had already fixed the file on disk while the index still held the old version.
+# Exit status ignored on purpose: it reports on the working tree, but what
+# matters is whether the *staged* content is formatted. Trusting the tree lets
+# a second attempt through, once a prior run fixed the file but not the index.
 nix run --inputs-from . nixpkgs#nixfmt-tree -- --ci >/dev/null 2>&1 || true
 
 # A staged .nix file that now has unstaged changes means the formatter rewrote

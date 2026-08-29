@@ -19,10 +19,9 @@ inputs:
   ...
 }:
 let
-  # Colorscheme name -> the plugin providing it. Keys are what
-  # `vim.cmd.colorscheme` receives, so they must match the plugin's own scheme
-  # names exactly; `settings.colorscheme` is an enum over these keys, so a typo
-  # is caught at eval instead of throwing at VimEnter.
+  # Scheme name -> plugin providing it. Keys go straight to
+  # `vim.cmd.colorscheme`, so they must match the plugin's own names.
+  # settings.colorscheme is an enum over these, so typos fail at eval.
   colorschemes = with pkgs.vimPlugins; {
     "tokyonight" = tokyonight-nvim;
     "tokyonight-night" = tokyonight-nvim;
@@ -61,11 +60,9 @@ in
     }
   ];
 
-  # Colorscheme. init.lua runs `vim.cmd.colorscheme(nixInfo("tokyonight-night",
-  # "settings", "colorscheme"))` at VimEnter, so this option and the spec below have
-  # to agree — dropping either makes every startup throw "colorscheme not found".
-  # init.lua also needs an lze spec listing the scheme name as a `colorscheme`
-  # trigger, or the plugin never loads and the same error appears.
+  # Colorscheme. This option, the spec below, and init.lua's lze `colorscheme`
+  # trigger must all agree on the name — miss any one and every startup throws
+  # "colorscheme not found" at VimEnter.
   options.settings.colorscheme = lib.mkOption {
     type = lib.types.enum (builtins.attrNames colorschemes);
     default = "tokyonight-night";
