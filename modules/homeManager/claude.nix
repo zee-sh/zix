@@ -31,10 +31,15 @@
     }:
     {
       config = lib.mkIf osConfig.zix.claude.enable {
-        home.file.".claude/statusline-command.sh" = {
-          source = config.dotfiles.make "claude-statusline" "modules/homeManager/_claude/statusline-command.sh";
-          executable = true;
-        };
+        # No `executable = true` here. It is incompatible with a mutable dotfile:
+        # home-manager copies (rather than symlinks) any file needing an exec bit,
+        # and the mutable source is an out-of-store symlink into the checkout,
+        # which the build sandbox cannot read — the build fails with
+        #   cp: cannot stat '...hm_statuslinecommand.sh': Permission denied
+        # The bit is not needed anyway: settings.json runs the script as
+        # `bash ~/.claude/statusline-command.sh`.
+        home.file.".claude/statusline-command.sh".source =
+          config.dotfiles.make "claude-statusline" "modules/homeManager/_claude/statusline-command.sh";
 
         home.file.".claude/settings.json".source =
           config.dotfiles.make "claude-settings" "modules/homeManager/_claude/settings.json";
