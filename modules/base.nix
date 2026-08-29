@@ -57,6 +57,7 @@ in
       homeManager.herdr
       homeManager.aliases
       homeManager.packages
+      homeManager.changesReport
     ];
   };
 }

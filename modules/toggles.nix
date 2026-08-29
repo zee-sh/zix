@@ -29,6 +29,7 @@
       packages.enable = lib.mkEnableOption "core CLI nix packages";
       cloud.enable = lib.mkEnableOption "cloud/k8s/IaC/DevSecOps tooling (work)";
       homebrew.enable = lib.mkEnableOption "Homebrew (nix-homebrew) + casks/brews";
+      changesReport.enable = lib.mkEnableOption "print what changed (nvd diff) on each activation";
 
       # Mode (not a feature): edit managed dotfiles live without a rebuild.
       # Per-dotfile: zix.dotfiles.mutable.<name> = true;  global: mutableByDefault.
