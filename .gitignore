@@ -2,15 +2,13 @@
 result
 result-*
 
-# Claude Code scratch state. Worktrees created here carry their own .git file, so
-# git records them as gitlinks (mode 160000) if they are ever staged.
-.claude/worktrees/
-
 # Ignore automatically generated direnv output
 .direnv
 
 # Ignore NixOS interactive test driver history
 **/.nixos-test-history
 
-# Ignore Claude Code local session state
+# Claude Code local session state. Covers .claude/worktrees/ too — worktrees
+# created there carry their own .git file, so git records them as gitlinks
+# (mode 160000) if they are ever staged.
 .claude

@@ -1,6 +1,11 @@
 {
   flake.modules.homeManager.tmux =
-    { osConfig, lib, pkgs, ... }:
+    {
+      osConfig,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       config = lib.mkIf osConfig.zix.tmux.enable {
         programs.tmux = {

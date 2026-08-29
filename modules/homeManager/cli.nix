@@ -63,6 +63,12 @@
               "--preview '${lib.getExe pkgs.eza} --oneline --git --long {}'"
             ];
           };
+          # Atuin owns Ctrl-R. Its shell integration is sourced after fzf's, so it
+          # already won by ordering; setting an empty command makes that explicit
+          # and silences home-manager's "both configure Ctrl-R" warning. fzf keeps
+          # Ctrl-T (files) and Alt-C (cd). To hand Ctrl-R back to fzf instead, drop
+          # this line and add "--disable-ctrl-r" to programs.atuin.flags above.
+          historyWidget.command = "";
           historyWidget.options = [ "--sort" ];
           fileWidget = {
             command = "fd --type f --hidden --follow --exclude .git";

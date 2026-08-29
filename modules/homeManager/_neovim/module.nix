@@ -18,6 +18,24 @@ inputs:
   options,
   ...
 }:
+let
+  # Colorscheme name -> the plugin providing it. Keys are what
+  # `vim.cmd.colorscheme` receives, so they must match the plugin's own scheme
+  # names exactly; `settings.colorscheme` is an enum over these keys, so a typo
+  # is caught at eval instead of throwing at VimEnter.
+  colorschemes = with pkgs.vimPlugins; {
+    "tokyonight" = tokyonight-nvim;
+    "tokyonight-night" = tokyonight-nvim;
+    "tokyonight-storm" = tokyonight-nvim;
+    "tokyonight-moon" = tokyonight-nvim;
+    "tokyonight-day" = tokyonight-nvim;
+    "onedark_dark" = onedarkpro-nvim;
+    "onedark_vivid" = onedarkpro-nvim;
+    "onedark" = onedarkpro-nvim;
+    "onelight" = onedarkpro-nvim;
+    "moonfly" = vim-moonfly-colors;
+  };
+in
 {
   imports = [ wlib.wrapperModules.neovim ];
 
@@ -43,26 +61,19 @@ inputs:
     }
   ];
 
-  # Colorscheme. init.lua runs `vim.cmd.colorscheme(nixInfo("onedark_dark",
+  # Colorscheme. init.lua runs `vim.cmd.colorscheme(nixInfo("tokyonight-night",
   # "settings", "colorscheme"))` at VimEnter, so this option and the spec below have
   # to agree — dropping either makes every startup throw "colorscheme not found".
+  # init.lua also needs an lze spec listing the scheme name as a `colorscheme`
+  # trigger, or the plugin never loads and the same error appears.
   options.settings.colorscheme = lib.mkOption {
-    type = lib.types.str;
-    default = "onedark_dark";
+    type = lib.types.enum (builtins.attrNames colorschemes);
+    default = "tokyonight-night";
     description = "Colorscheme to apply; must be a key of the set in specs.colorscheme.";
   };
   config.specs.colorscheme = {
     lazy = true;
-    data = builtins.getAttr config.settings.colorscheme (
-      with pkgs.vimPlugins;
-      {
-        "onedark_dark" = onedarkpro-nvim;
-        "onedark_vivid" = onedarkpro-nvim;
-        "onedark" = onedarkpro-nvim;
-        "onelight" = onedarkpro-nvim;
-        "moonfly" = vim-moonfly-colors;
-      }
-    );
+    data = colorschemes.${config.settings.colorscheme};
   };
 
   # ── Editor core ────────────────────────────────────────────────────────────
@@ -152,7 +163,7 @@ inputs:
     runtimePkgs = with pkgs; [
       terraform-ls
       yaml-language-server
-      dockerfile-language-server-nodejs
+      dockerfile-language-server
     ];
   };
 
