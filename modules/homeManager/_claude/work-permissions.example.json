@@ -1,0 +1,42 @@
+{
+  "_comment": [
+    "Reference only — this file is not installed anywhere.",
+    "",
+    "These permissions used to live in the user-level ~/.claude/settings.json.",
+    "They belong to the repos they operate on, not to the laptop: a rule for",
+    "`aws eks describe-nodegroup` is a property of the infra codebase.",
+    "",
+    "Copy the permissions block into `.claude/settings.json` at the root of the",
+    "relevant work repo and commit it. Claude Code merges allow lists across",
+    "layers, so project rules add to whatever the user file already grants.",
+    "",
+    "Do NOT put them in .claude/settings.local.json — that file is for",
+    "interactively-granted rules and is git-ignored."
+  ],
+  "permissions": {
+    "allow": [
+      "Bash(aws ec2 describe-instances:*)",
+      "Bash(aws ec2 describe-security-groups:*)",
+      "Bash(aws eks describe-addon:*)",
+      "Bash(aws eks describe-nodegroup:*)",
+      "Bash(aws eks list-clusters:*)",
+      "Bash(aws eks list-nodegroups:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl top:*)",
+      "Bash(kubectl version:*)",
+      "Bash(kubectl wait:*)",
+      "Bash(pulumi config get:*)",
+      "Bash(pulumi config set:*)",
+      "Bash(pulumi stack ls:*)",
+      "Bash(pulumi stack output:*)",
+      "Bash(pulumi stack select:*)",
+      "WebFetch(domain:aws.amazon.com)",
+      "WebFetch(domain:www.pulumi.com)",
+      "mcp__awslabs_aws-documentation-mcp-server__read_documentation",
+      "mcp__awslabs_aws-documentation-mcp-server__search_documentation",
+      "mcp__pulumi__pulumi-cli-preview"
+    ]
+  }
+}

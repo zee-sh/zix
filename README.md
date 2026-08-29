@@ -24,9 +24,24 @@ Hosts are composed by **flipping toggles** (`zix.*`), not by curating import lis
    from the preset in `modules/profile/personal.nix`. `modules/toggles.nix` is the full list.
 
 Things you will likely want to change: the Homebrew casks in `modules/darwin/homebrew.nix`, the macOS
-defaults in `modules/darwin/system-preferences.nix`, the Claude Code permissions in
-`modules/homeManager/_claude/settings.json` (they encode my tooling), and the `agent-sync` workspace in
+defaults in `modules/darwin/system-preferences.nix`, the Claude Code settings in
+`modules/homeManager/_claude/settings.json`, and the `agent-sync` workspace in
 `modules/homeManager/herdr.nix`.
+
+### Claude Code settings
+
+`~/.claude/settings.json` is managed here and symlinked into this checkout, so it must stay **mutable**
+(`zix.dotfiles`) — Claude and herdr both write to it, and an in-store copy makes those writes fail.
+
+User settings are the *weakest* layer and merge with project ones, so this file holds only stable
+globals — hooks, statusLine, and denies. Denies belong here because a deny at any layer is absolute and
+no project can override it. Two things deliberately live elsewhere:
+
+- **Per-project allows** go in that repo's tracked `.claude/settings.json`. The AWS/kubectl/Pulumi rules
+  that used to sit here are kept as a paste-ready reference in
+  `modules/homeManager/_claude/work-permissions.example.json` (not installed).
+- **Interactive grants** ("always allow") are written by Claude to `.claude/settings.local.json` at the
+  project root — already covered by `.gitignore`, so they never reach a commit.
 
 ## Layout
 
