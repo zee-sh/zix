@@ -24,6 +24,7 @@
       tmux.enable = lib.mkEnableOption "tmux";
       zellij.enable = lib.mkEnableOption "zellij";
       ghostty.enable = lib.mkEnableOption "ghostty terminal config";
+      claude.enable = lib.mkEnableOption "Claude Code status line (starship + session state)";
       neovim.enable = lib.mkEnableOption "neovim (nix-wrapper-modules; plugins + LSPs from nix)";
       herdr.enable = lib.mkEnableOption "herdr config + personal session bootstrap";
       aliases.enable = lib.mkEnableOption "shared shell aliases";
