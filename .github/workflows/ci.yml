@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same ref; a PR only needs its newest commit checked.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fmt:
+    name: nix fmt
+    # macOS (arm64) because modules/systems.nix declares only aarch64-darwin, so
+    # `formatter` exists for no other system — on ubuntu this fails with
+    # "does not provide attribute 'formatter.x86_64-linux'". Once a Linux host
+    # lands and systems.nix grows a Linux entry, this can move to ubuntu-latest.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      # --ci implies --fail-on-change and --no-cache: treefmt formats into the
+      # ephemeral checkout and exits non-zero if anything changed, so an
+      # unformatted file fails the check rather than being silently rewritten.
+      - name: Check formatting
+        run: nix fmt -- --ci
+
+  eval:
+    name: eval darwin configurations
+    # macOS runner (arm64, matching both hosts) rather than ubuntu: evaluating a
+    # darwin configuration from Linux can trip over platform assertions in the
+    # module tree, and a green check is worth more than the cheaper runner. Move
+    # this to ubuntu-latest if it proves to evaluate cleanly there.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      # Catches broken option references, bad merges and typos in module wiring
+      # that formatting alone would not. Not a build: it stops at the derivation.
+      - name: Evaluate m2air
+        run: nix eval --raw .#darwinConfigurations.m2air.system.drvPath
+
+      - name: Evaluate m4max
+        run: nix eval --raw .#darwinConfigurations.m4max.system.drvPath
