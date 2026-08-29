@@ -2,6 +2,10 @@
 result
 result-*
 
+# Claude Code scratch state. Worktrees created here carry their own .git file, so
+# git records them as gitlinks (mode 160000) if they are ever staged.
+.claude/worktrees/
+
 # Ignore automatically generated direnv output
 .direnv
 

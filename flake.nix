@@ -21,6 +21,23 @@
 
     import-tree.url = "github:vic/import-tree";
 
+    # Wraps neovim: plugins and language servers come from nix, config stays Lua.
+    # Successor to nixCats-nvim (same author); nixCats is in maintenance mode.
+    nix-wrapper-modules = {
+      url = "github:BirdeeHub/nix-wrapper-modules";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Neovim plugins not in nixpkgs, fetched by the `plugins-` prefix convention.
+    plugins-lze = {
+      url = "github:BirdeeHub/lze";
+      flake = false;
+    };
+    plugins-lzextras = {
+      url = "github:BirdeeHub/lzextras";
+      flake = false;
+    };
+
     # Installs + pins Homebrew declaratively. mutableTaps stays true, so no
     # homebrew-core/cask git inputs are needed (obsolete under Homebrew API mode).
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";

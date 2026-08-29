@@ -55,7 +55,7 @@
               "coreutils" # https://www.gnu.org/software/coreutils/ - GNU file, shell & text utilities
               "ffmpeg" # https://ffmpeg.org/ - play, record, convert & stream audio/video
               # editor
-              "neovim" # https://neovim.io/ - Vim-fork focused on extensibility
+              # "neovim" # now from nix (zix.neovim) — brew's bin would shadow it on PATH
               # cloud / k8s auth
               "granted" # https://granted.dev/ - the easiest way to access your cloud
               "danielfoehrkn/switch/switch" # https://github.com/danielfoehrKn/kubeswitch - the kubectx for operators
