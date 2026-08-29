@@ -57,15 +57,19 @@
         programs.fzf = {
           enable = true;
           enableZshIntegration = true;
-          changeDirWidgetCommand = "fd --type d --hidden --follow --exclude .git";
-          changeDirWidgetOptions = [
-            "--preview '${pkgs.eza}/bin/eza --oneline --git --long {}'"
-          ];
-          historyWidgetOptions = [ "--sort" ];
-          fileWidgetCommand = "fd --type f --hidden --follow --exclude .git";
-          fileWidgetOptions = [
-            "--preview '${pkgs.bat}/bin/bat --color=always --style=numbers --line-range :300 {}'"
-          ];
+          changeDirWidget = {
+            command = "fd --type d --hidden --follow --exclude .git";
+            options = [
+              "--preview '${lib.getExe pkgs.eza} --oneline --git --long {}'"
+            ];
+          };
+          historyWidget.options = [ "--sort" ];
+          fileWidget = {
+            command = "fd --type f --hidden --follow --exclude .git";
+            options = [
+              "--preview '${lib.getExe pkgs.bat} --color=always --style=numbers --line-range :300 {}'"
+            ];
+          };
           defaultCommand = "fd --type f --hidden --follow --exclude .git";
           colors = {
             "bg+" = "#293739";

@@ -19,6 +19,7 @@
           aliases.enable = lib.mkDefault true;
           packages.enable = lib.mkDefault true;
           homebrew.enable = lib.mkDefault true;
+          changesReport.enable = lib.mkDefault true;
         };
       };
     };
