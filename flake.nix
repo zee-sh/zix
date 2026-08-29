@@ -1,5 +1,5 @@
 {
-  description = "zix — dendritic nix-darwin config for zeeshans' machines";
+  description = "zix — opinionated dendritic nix-darwin config for macOS";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

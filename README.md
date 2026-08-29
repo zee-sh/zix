@@ -5,8 +5,26 @@ later), built with [flake-parts](https://flake.parts) + [import-tree](https://gi
 
 Hosts are composed by **flipping toggles** (`zix.*`), not by curating import lists or maintaining branches.
 
+> **This is an opinionated personal setup**, not a framework. It picks zsh, starship, neovim, ghostty,
+> atuin, a particular set of macOS defaults, and a specific Homebrew cask list. It is structured so you
+> can fork it and disagree cheaply — every feature sits behind a toggle you can flip off.
+
 > **Setting up a fresh machine?** Follow **[BOOTSTRAP.md](./BOOTSTRAP.md)** — the step-by-step runbook
 > (SSH key, clone, Determinate Nix, first activation).
+
+## Using this yourself
+
+1. Fork, then clone.
+2. Edit **`modules/profile/identity.nix`** — username, name, email, checkout path. It is the only file
+   you must change; hosts and features read from it.
+3. Copy `modules/hosts/m2air.nix` to `modules/hosts/<your-hostname>.nix`, rename the key inside, and
+   delete the hosts you do not need. The filename must match `scutil --get LocalHostName`.
+4. Turn things off you do not want: `zix.<feature>.enable = false;` in your host, or drop the feature
+   from the preset in `modules/profile/personal.nix`. `modules/toggles.nix` is the full list.
+
+Things you will likely want to change: the Homebrew casks in `modules/darwin/homebrew.nix`, the macOS
+defaults in `modules/darwin/system-preferences.nix`, and the Claude Code permissions in
+`modules/homeManager/_claude/settings.json` (they encode my tooling).
 
 ## Layout
 
@@ -14,7 +32,7 @@ Hosts are composed by **flipping toggles** (`zix.*`), not by curating import lis
 - `modules/toggles.nix` — the `zix.*` toggle surface (declared once, system-level).
 - `modules/base.nix` — the darwin + home-manager feature catalogs.
 - `modules/configurations/darwin.nix` — turns `configurations.darwin.<host>` into `darwinConfigurations`.
-- `modules/profile/` — identity + `personal`/`work` presets.
+- `modules/profile/` — `identity.nix` (edit this) + `personal`/`work` presets.
 - `modules/darwin/`, `modules/homeManager/` — feature modules, each gated by a `zix.*` toggle.
 - `modules/hosts/` — one file per machine: pick a preset, flip overrides.
 
@@ -48,6 +66,8 @@ on it → import it in `base.nix` → enable it in a preset/host.
 ```sh
 just build   # build current host, no activation
 just switch  # build + activate current host
+just ci      # run the CI checks locally (fmt + eval both hosts)
+just hooks   # one-time: enable the pre-commit formatting gate
 just update  # update flake inputs
 just check   # nix flake check
 just fmt     # format nix files

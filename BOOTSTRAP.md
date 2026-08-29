@@ -1,61 +1,67 @@
-# m2air Fresh Bootstrap Runbook
+# Fresh Machine Bootstrap Runbook
 
-Bring a freshly-wiped m2air up on the `zix` config. Do the steps in order.
+Bring a freshly-wiped Mac up on this config. Do the steps in order.
 
-Repo is **private** and there is **no SSH key** on this machine yet — handled in Step 1.
+> **This is an opinionated personal setup.** It installs a specific set of tools,
+> shells and macOS defaults. Fork it and change what you disagree with — the
+> toggle surface in `modules/toggles.nix` makes that cheap.
+
+Throughout, replace:
+
+| Placeholder | With |
+|---|---|
+| `<you>` | your GitHub username |
+| `<repo>` | your fork (e.g. `<you>/zix`) |
+| `<host>` | the hostname for this machine (e.g. `m2air`) |
+| `<user>` | your macOS account name (`whoami`) |
 
 ---
 
 ## 0. macOS first-boot (manual, unavoidable)
 
 1. Finish Setup Assistant, connect Wi-Fi, sign into your Apple ID (optional).
-2. You do **not** need to change System Settings by hand — the config makes them declarative
-   (natural scrolling off, Finder/Dock/text tweaks; see `modules/darwin/system-preferences.nix`).
-   They apply on the first `switch` in Step 4.
+2. You do **not** need to change System Settings by hand — the config makes them
+   declarative (see `modules/darwin/system-preferences.nix`). They apply in Step 5.
 3. Install the Xcode Command Line Tools (needed for `git`):
    ```sh
    xcode-select --install
    ```
-   Accept the GUI prompt and wait for it to finish. Verify:
-   ```sh
-   git --version
-   ```
+   Accept the GUI prompt and wait. Verify with `git --version`.
 
 ---
 
-## 1. GitHub access — generate an SSH key, add it in the browser
-
-You're signed into GitHub in the browser, so add a new key there:
+## 1. GitHub access — SSH key
 
 ```sh
-ssh-keygen -t ed25519 -C "m2air" -f ~/.ssh/id_ed25519 -N ""
+ssh-keygen -t ed25519 -C "<host>" -f ~/.ssh/id_ed25519 -N ""
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
-pbcopy < ~/.ssh/id_ed25519.pub          # public key is now on the clipboard
+pbcopy < ~/.ssh/id_ed25519.pub          # public key now on the clipboard
 ```
 
-Open <https://github.com/settings/ssh/new>, give it a title (e.g. `m2air`), paste, **Add SSH key**.
+Open <https://github.com/settings/ssh/new>, title it `<host>`, paste, **Add SSH key**.
 
-Test:
 ```sh
 ssh -T git@github.com                    # type "yes" the first time
 ```
-You should see: `Hi zee-sh! You've successfully authenticated...`
 
-> Alternative if you'd rather not use SSH: create a Personal Access Token and clone over HTTPS
-> (`git clone https://github.com/zee-sh/zix.git`, username = `zee-sh`, password = the token).
-> SSH is recommended — it also gives you push access for free.
+Expect: `Hi <you>! You've successfully authenticated...`
+
+> Prefer HTTPS? Create a Personal Access Token and clone over HTTPS instead.
+> SSH is recommended — it gives push access for free.
 
 ---
 
-## 2. Directory structure + clone
+## 2. Clone
 
 ```sh
 mkdir -p ~/projects/personal
 cd ~/projects/personal
-git clone git@github.com:zee-sh/zix.git
+git clone git@github.com:<repo>.git zix
 cd zix
 ```
+
+Where you clone matters — Step 4 records the path.
 
 ---
 
@@ -65,92 +71,115 @@ cd zix
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate
 ```
 
-Accept the prompts. When it finishes, **open a new terminal** (or `exec $SHELL -l`) so `nix` is on PATH.
-Verify:
-```sh
-nix --version                            # should mention Determinate Nix
-```
+Accept the prompts, then **open a new terminal** (or `exec $SHELL -l`) so `nix`
+is on PATH. Verify with `nix --version`.
 
-> The config sets `nix.enable = false`, so nix-darwin will **not** fight Determinate over `/etc/nix/nix.conf`.
+> The config sets `nix.enable = false`, so nix-darwin will not fight Determinate
+> over `/etc/nix/nix.conf`.
 
 ---
 
-## 4. First activation (bootstrap nix-darwin)
+## 4. Make it yours
 
-There's no `darwin-rebuild` yet on a fresh box, so build the system from the flake, then activate it.
-Run from inside the repo:
+**Edit `modules/profile/identity.nix`** — the only file you must change:
+
+```nix
+config.profile = {
+  username = "<user>";
+  fullName = "Your Name";
+  email = "you@example.com";
+  checkoutPath = "/Users/<user>/projects/personal/zix";   # where you cloned in Step 2
+};
+```
+
+`checkoutPath` must be the absolute path to this checkout. Mutable dotfiles
+symlink into it, and a wrong value gives dangling symlinks rather than a build
+error.
+
+**Then add a host.** Copy `modules/hosts/m2air.nix` to `modules/hosts/<host>.nix`
+and change the `configurations.darwin."<host>"` key to match. `<host>` must equal
+`scutil --get LocalHostName`, because `just switch` resolves the host from
+`hostname -s`.
+
+```nix
+configurations.darwin."<host>".module =
+  { config, ... }:
+  {
+    imports = [ darwin.base ];
+    primaryUser = config.profile.username;
+    system.stateVersion = 7;             # current baseline for a NEW machine
+
+    zix.profiles.personal.enable = true;
+    # zix.profiles.work.enable = true;   # adds cloud/k8s tooling
+
+    zix.dotfiles.mutableByDefault = true;
+    zix.dotfiles.path = config.profile.checkoutPath;
+  };
+```
+
+Delete the host files you do not need. Turn individual features off with
+`zix.<feature>.enable = false;` — `modules/toggles.nix` lists them all.
+
+---
+
+## 5. First activation
+
+There is no `darwin-rebuild` yet on a fresh box, so build from the flake, then
+activate:
 
 ```sh
 cd ~/projects/personal/zix
-nix build .#darwinConfigurations.m2air.system
-sudo ./result/sw/bin/darwin-rebuild switch --flake .#m2air
+nix build .#darwinConfigurations.<host>.system
+sudo ./result/sw/bin/darwin-rebuild switch --flake .#<host>
 ```
 
-- This is the first real build — it downloads/compiles the closure (a few minutes).
-- **If it aborts on `/etc/zshrc` or `/etc/bashrc` "in the way"**, back them up and re-run the `switch`:
+- This is the first real build; it downloads/compiles the closure (several minutes).
+- **If it aborts on `/etc/zshrc` or `/etc/bashrc` "in the way"**, move them aside
+  and re-run the switch:
   ```sh
   sudo mv /etc/zshrc  /etc/zshrc.before-nix   2>/dev/null || true
   sudo mv /etc/bashrc /etc/bashrc.before-nix  2>/dev/null || true
-  sudo ./result/sw/bin/darwin-rebuild switch --flake .#m2air
   ```
-- **If `sudo` can't find nix** (`sudo: nix: command not found`), use the full path:
+- **If activation aborts on an existing dotfile** ("would be clobbered"), back it
+  up and re-run — home-manager refuses to overwrite files it does not own.
+- **If `sudo` cannot find nix**, use the full path:
   ```sh
-  sudo /nix/var/nix/profiles/default/bin/darwin-rebuild switch --flake .#m2air
+  sudo /nix/var/nix/profiles/default/bin/darwin-rebuild switch --flake .#<host>
   ```
 
 When it completes, **open a new terminal**.
 
 ---
 
-## 5. Verify
+## 6. Verify
 
 ```sh
 darwin-rebuild --version
-scutil --get LocalHostName               # → m2air
-hostname -s                              # → m2air
-git config --get user.name               # → Zeeshan Sanaullah  (from the HM git feature)
-# natural scrolling off, Finder column view, etc. now in effect
+scutil --get LocalHostName               # → <host>
+git config --get user.name               # → the name set in Step 4
 ```
 
-Subsequent rebuilds (from the repo dir):
+Subsequent rebuilds (the first activation installs `just`):
+
 ```sh
-sudo darwin-rebuild switch --flake .#m2air
+just switch                              # or: sudo darwin-rebuild switch --flake .#<host>
+just hooks                               # one-time: enable the pre-commit format gate
 ```
-> The first activation installs `just`, so afterward you can use `just switch` instead of `darwin-rebuild`.
 
 ---
 
-## 6. What's declarative
+## 7. Not declarative yet
 
-- **In the config:** base system, primary user, Touch-ID sudo, Nerd Fonts, git identity, macOS system
-  preferences (natural scrolling off, Finder/Dock/text defaults), `nix.enable = false`, a core set of nix
-  CLI packages, and Homebrew apps (casks/brews) via `nix-homebrew`.
-- **Not yet:** shells (zsh/fish/nushell), starship, tmux/zellij, richer git (delta/lazygit), terminals
-  (wezterm/ghostty/cmux) — added incrementally.
+Install after Step 5:
 
-This is a working base you can live on while features are pulled in.
+- **Tailscale** — <https://tailscale.com/download/mac>, then sign in.
+- **Claude Code** — `curl -fsSL https://claude.ai/install.sh | bash`
+  (the config puts `~/.local/bin` on PATH for it).
 
 ---
 
-## 7. Post-activation apps (manual for now)
+## Capturing more settings
 
-These aren't declarative yet. Install after Step 4:
-
-- **Tailscale** — download the macOS app: <https://tailscale.com/download/mac>, then sign in.
-  (Can later be managed via the `tailscale` Homebrew cask.)
-- **Claude Code** — native install (recommended):
-  ```sh
-  curl -fsSL https://claude.ai/install.sh | bash
-  ```
-  Docs: <https://code.claude.com/docs/en/quickstart#native-install-recommended>
-
----
-
-## Manual settings → nix (how to capture more)
-
-Anything you'd otherwise set in System Settings goes in `modules/darwin/system-preferences.nix`
-(`system.defaults.*`). Already captured: natural scrolling off, Finder (extensions/column view/pathbar),
-Dock hot corner, login window, screenshots → Downloads, text-substitution off.
-
-**When you change something by hand and want it permanent:** tell me what you changed (or the
-`defaults write ...` command), and I'll fold it into that module so the next machine gets it for free.
+Anything you would otherwise set in System Settings belongs in
+`modules/darwin/system-preferences.nix` (`system.defaults.*`). Run `defaults read`
+before and after a manual change to find the key.
