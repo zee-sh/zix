@@ -17,7 +17,7 @@ in
       zix.profiles.personal.enable = true;
       # per-feature overrides go here, e.g. zix.docker.enable = false;
 
-      # Edit managed dotfiles (zellij/ghostty/nushell/herdr) live, no rebuild.
+      # Edit managed dotfiles (zellij/ghostty/herdr/claude) live, no rebuild.
       zix.dotfiles.mutableByDefault = true;
       zix.dotfiles.path = config.profile.checkoutPath;
     };

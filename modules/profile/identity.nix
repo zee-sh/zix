@@ -5,8 +5,9 @@
   flake.modules.generic.profile =
     { lib, ... }:
     {
+      # Not readOnly: a fork with two Macs may use different account names or
+      # clone to different paths, and a host needs to override these.
       options.profile = lib.mkOption {
-        readOnly = true;
         type = lib.types.submodule {
           options = {
             username = lib.mkOption {

@@ -45,7 +45,8 @@
         };
         description = ''
           Per-dotfile mutability, keyed by the name passed to dotfiles.make
-          (e.g. "zellij", "ghostty", "nushell"). Overrides mutableByDefault.
+          (e.g. "zellij", "ghostty"). Keys are not validated: an unknown
+          name is silently ignored. Overrides mutableByDefault.
         '';
       };
       dotfiles.path = lib.mkOption {

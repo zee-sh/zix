@@ -81,7 +81,7 @@ is on PATH. Verify with `nix --version`.
 
 ## 4. Make it yours
 
-**Edit `modules/profile/identity.nix`** — the only file you must change:
+**Edit `modules/profile/identity.nix`** — the one file everything else reads from:
 
 ```nix
 config.profile = {
@@ -96,29 +96,50 @@ config.profile = {
 symlink into it, and a wrong value gives dangling symlinks rather than a build
 error.
 
-**Then add a host.** Copy `modules/hosts/m2air.nix` to `modules/hosts/<host>.nix`
-and change the `configurations.darwin."<host>"` key to match. `<host>` must equal
-`scutil --get LocalHostName`, because `just switch` resolves the host from
-`hostname -s`.
+**Then add a host.** Pick any `<host>` name you like — activation *sets* the
+machine's hostname to it, so it does not have to match what the Mac is called
+today. From then on `just switch` resolves the host from `hostname -s`, so the
+name must stay stable afterwards.
+
+Create `modules/hosts/<host>.nix` with the whole file below (the
+`configurations.darwin."<host>"` key must match the name you chose):
 
 ```nix
-configurations.darwin."<host>".module =
-  { config, ... }:
-  {
-    imports = [ darwin.base ];
-    primaryUser = config.profile.username;
-    system.stateVersion = 7;             # current baseline for a NEW machine
+{ config, ... }:
+let
+  inherit (config.flake.modules) darwin;
+in
+{
+  configurations.darwin."<host>".module =
+    { config, ... }:
+    {
+      imports = [ darwin.base ];
 
-    zix.profiles.personal.enable = true;
-    # zix.profiles.work.enable = true;   # adds cloud/k8s tooling
+      primaryUser = config.profile.username;
+      system.stateVersion = 7;             # current baseline for a NEW machine
 
-    zix.dotfiles.mutableByDefault = true;
-    zix.dotfiles.path = config.profile.checkoutPath;
-  };
+      zix.profiles.personal.enable = true;
+      # zix.profiles.work.enable = true;   # adds cloud/k8s tooling
+
+      zix.dotfiles.mutableByDefault = true;
+      zix.dotfiles.path = config.profile.checkoutPath;
+    };
+}
 ```
 
 Delete the host files you do not need. Turn individual features off with
 `zix.<feature>.enable = false;` — `modules/toggles.nix` lists them all.
+
+**Now stage your changes:**
+
+```sh
+git add modules/profile/identity.nix modules/hosts/
+```
+
+This is not optional. Flakes ignore **untracked** files, so an unstaged host
+file is invisible to Nix and Step 5 fails with `does not provide attribute
+'darwinConfigurations.<host>.system'` — which looks like a broken config rather
+than a staging problem. A commit is not required, only `git add`.
 
 ---
 

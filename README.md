@@ -1,6 +1,6 @@
 # zix
 
-Dendritic [nix-darwin](https://github.com/nix-darwin/nix-darwin) config for my Macs (and a NixOS box
+Dendritic [nix-darwin](https://github.com/nix-darwin/nix-darwin) config for macOS (and a NixOS box
 later), built with [flake-parts](https://flake.parts) + [import-tree](https://github.com/vic/import-tree).
 
 Hosts are composed by **flipping toggles** (`zix.*`), not by curating import lists or maintaining branches.
@@ -15,16 +15,18 @@ Hosts are composed by **flipping toggles** (`zix.*`), not by curating import lis
 ## Using this yourself
 
 1. Fork, then clone.
-2. Edit **`modules/profile/identity.nix`** — username, name, email, checkout path. It is the only file
-   you must change; hosts and features read from it.
-3. Copy `modules/hosts/m2air.nix` to `modules/hosts/<your-hostname>.nix`, rename the key inside, and
-   delete the hosts you do not need. The filename must match `scutil --get LocalHostName`.
+2. Edit **`modules/profile/identity.nix`** — username, name, email, checkout path. Hosts and features
+   read from it, so it is the one file you always have to change.
+3. Copy `modules/hosts/m2air.nix` to `modules/hosts/<your-host>.nix`, rename the `configurations.darwin`
+   key inside to match, and delete the hosts you do not need. Then `git add` it — flakes ignore untracked
+   files, so an unstaged host file is invisible to Nix. The filename is free; only the key matters.
 4. Turn things off you do not want: `zix.<feature>.enable = false;` in your host, or drop the feature
    from the preset in `modules/profile/personal.nix`. `modules/toggles.nix` is the full list.
 
 Things you will likely want to change: the Homebrew casks in `modules/darwin/homebrew.nix`, the macOS
-defaults in `modules/darwin/system-preferences.nix`, and the Claude Code permissions in
-`modules/homeManager/_claude/settings.json` (they encode my tooling).
+defaults in `modules/darwin/system-preferences.nix`, the Claude Code permissions in
+`modules/homeManager/_claude/settings.json` (they encode my tooling), and the `agent-sync` workspace in
+`modules/homeManager/herdr.nix`.
 
 ## Layout
 

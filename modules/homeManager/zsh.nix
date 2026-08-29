@@ -23,7 +23,7 @@
           dirHashes = {
             config = "$HOME/.config";
             desk = "$HOME/Desktop";
-            zix = "$HOME/projects/personal/zix";
+            zix = osConfig.profile.checkoutPath;
           };
 
           envExtra = ''

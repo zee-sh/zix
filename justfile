@@ -32,6 +32,9 @@ hooks:
 # Run the CI checks locally (fmt + eval); fmt rewrites files before failing
 ci:
     nix run --inputs-from . nixpkgs#nixfmt-tree -- --ci
-    nix eval --raw .#darwinConfigurations.m2air.system.drvPath
-    nix eval --raw .#darwinConfigurations.m4max.system.drvPath
+    @# Hosts are discovered, not listed — deleting one must not break CI.
+    for h in $(nix eval --json .#darwinConfigurations --apply builtins.attrNames | tr -d '[]"' | tr ',' ' '); do \
+        echo "eval $h"; \
+        nix eval --raw ".#darwinConfigurations.$h.system.drvPath" >/dev/null || exit 1; \
+    done
     @echo "CI checks passed."
