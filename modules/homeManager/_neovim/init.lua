@@ -235,7 +235,7 @@ nixInfo.lze.load {
     load = function(_name)
       -- schedule so it runs after VimEnter
       vim.schedule(function()
-        vim.cmd.colorscheme(nixInfo("onedark_dark", "settings", "colorscheme"))
+        vim.cmd.colorscheme(nixInfo("tokyonight-night", "settings", "colorscheme"))
         vim.schedule(function()
           -- I like this color. Use vim.schedule again to set it after the colorscheme is finished
           vim.cmd([[hi LineNr guifg=#bb9af7]])
@@ -255,6 +255,11 @@ nixInfo.lze.load {
     "vim-moonfly-colors",
     auto_enable = true,
     colorscheme = "moonfly",
+  },
+  {
+    "tokyonight.nvim",
+    auto_enable = true,
+    colorscheme = { "tokyonight", "tokyonight-night", "tokyonight-storm", "tokyonight-moon", "tokyonight-day" },
   },
   {
     "snacks.nvim",
@@ -818,7 +823,11 @@ nixInfo.lze.load {
       require('lualine').setup({
         options = {
           icons_enabled = false,
-          theme = nixInfo("onedark_dark", "settings", "colorscheme"),
+          -- "auto" derives the statusline theme from the active colorscheme.
+          -- Passing the colorscheme name directly only works when lualine ships a
+          -- theme under that exact name -- it does not for e.g. "tokyonight-night",
+          -- whose lualine theme is just "tokyonight".
+          theme = "auto",
           component_separators = '|',
           section_separators = '',
         },
