@@ -149,6 +149,10 @@
                 trusted = true;
               } # nova, pluto
               {
+                name = "nklmilojevic/sofka";
+                trusted = true;
+              } # sofka
+              {
                 name = "pulumi/tap";
                 trusted = true;
               } # esc
@@ -179,6 +183,7 @@
               "fairwindsops/tap/nova" # https://github.com/FairwindsOps/nova - check installed Helm charts for updates
               "fairwindsops/tap/pluto" # https://github.com/FairwindsOps/pluto - detect deprecated Kubernetes apiVersions
               "turbot/tap/powerpipe" # https://powerpipe.io/ - DevOps dashboards & benchmarks
+              "nklmilojevic/sofka/sofka" # https://sofka.rs - Kubernetes TUI with Flux CD support (not in nixpkgs)
               # databases
               "duckdb" # https://www.duckdb.org - embeddable SQL OLAP database
               "postgresql@16" # https://www.postgresql.org/ - object-relational database
