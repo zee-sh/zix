@@ -12,3 +12,27 @@ result-*
 # created there carry their own .git file, so git records them as gitlinks
 # (mode 160000) if they are ever staged.
 .claude
+
+# Secrets — never commit key material. (sops-nix stores *encrypted* secrets,
+# which are safe to commit; only the private age key must stay out. If you ever
+# adopt agenix, un-ignore its committed *.age ciphertext.)
+keys.txt
+*.age
+*.pem
+*.key
+*.p12
+*.pfx
+*.asc
+id_rsa
+id_ed25519
+id_ecdsa
+id_dsa
+.env
+.env.*
+!.env.example
+.netrc
+*.tfstate
+*.tfstate.*
+kubeconfig
+*.kubeconfig
+.aws/credentials

@@ -57,11 +57,15 @@ instead.
 just ci                      # fmt + eval — run before pushing
 just build                   # build without activating
 just switch                  # build and activate (sudo)
-just hooks                   # one-time: enable the pre-commit formatting gate
+just hooks                   # one-time: enable git hooks (gitleaks + formatting)
 ```
 
 `darwin-rebuild switch` needs interactive sudo, so it cannot run from a tool
 call — hand that command to the user.
+
+Git hooks (gitleaks secret scan + formatting) are opt-in per clone via
+`just hooks` and advisory only — `--no-verify` bypasses them and there is no
+server-side enforcement. Treat them as a guard, not a guarantee.
 
 Work lands via PR off a `feat/` branch; CI runs `fmt` and `eval` for both hosts.
 This repo is **private**, so Actions minutes are billed — macOS runners cost 10×

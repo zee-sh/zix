@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#
+# Last local gate before commits reach the remote (enable with `just hooks`).
+# Scans exactly the pushed range for secrets, and checks whole-tree formatting —
+# pre-commit only scans staged content, so this catches commits it structurally
+# misses (--no-verify, pre-hook history) and unformatted files it never staged.
+set -euo pipefail
+
+# Can't scan without nix (fresh machine mid-bootstrap); don't block the push.
+if ! command -v nix >/dev/null 2>&1; then
+  exit 0
+fi
+
+gl() { nix run --inputs-from . nixpkgs#gitleaks -- "$@"; }
+
+# git feeds pre-push a stdin list: <local ref> <local oid> <remote ref> <remote oid>.
+# Scan only what's being pushed: new commits on an existing branch, or the whole
+# reachable history for a new branch. Skip deletions (local oid all-zero).
+leak=0
+while read -r _lref loid _rref roid; do
+  if [[ "$loid" =~ ^0+$ ]]; then
+    continue
+  fi
+  if [[ "$roid" =~ ^0+$ ]]; then
+    gl git --no-banner --redact --log-opts="$loid" || leak=1
+  else
+    gl git --no-banner --redact --log-opts="$roid..$loid" || leak=1
+  fi
+done
+if [ "$leak" -ne 0 ]; then
+  echo "pre-push: gitleaks found a potential secret in the commits being pushed." >&2
+  echo "Push aborted. Review above; bypass once with: git push --no-verify" >&2
+  exit 1
+fi
+
+# Whole-tree formatting, same rules as CI (nixfmt), without rewriting the tree.
+# --check exits non-zero if any tracked .nix would change; an explicit file list
+# avoids nixfmt's directory-arg deprecation.
+nix_files=$(git ls-files '*.nix')
+if [ -n "$nix_files" ]; then
+  if ! printf '%s\n' "$nix_files" | xargs nix run --inputs-from . nixpkgs#nixfmt -- --check >/dev/null 2>&1; then
+    echo "pre-push: tracked .nix files are not formatted (whole-tree, same rules as CI)." >&2
+    echo "Run 'just fmt', commit, and push again. Bypass once: git push --no-verify" >&2
+    exit 1
+  fi
+fi

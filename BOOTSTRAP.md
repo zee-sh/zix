@@ -184,8 +184,13 @@ Subsequent rebuilds (the first activation installs `just`):
 
 ```sh
 just switch                              # or: sudo darwin-rebuild switch --flake .#<host>
-just hooks                               # one-time: enable the pre-commit format gate
+just hooks                               # one-time: enable git hooks (gitleaks + formatting)
 ```
+
+> **Run `just hooks` before your first commit.** Hooks are opt-in per clone, so
+> until you run it there is *no* secret scanning — and bootstrap is exactly when
+> age keys / `.env` files get created. It's advisory (bypassable with
+> `--no-verify`, no server-side enforcement), not a hard guarantee.
 
 ---
 

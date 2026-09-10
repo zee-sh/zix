@@ -1,0 +1,10 @@
+# gitleaks config, auto-loaded by the git hooks. Extending the built-in default
+# ruleset is the important line: without `useDefault = true`, defining any rule
+# or allowlist here REPLACES all default detection and silently guts the hooks.
+[extend]
+useDefault = true
+
+# Add allowlists below when a real false positive appears, e.g.:
+# [allowlist]
+#   paths = ['''modules/homeManager/some-config\.toml''']
+#   regexes = ['''EXAMPLE_TOKEN_[0-9a-f]+''']
