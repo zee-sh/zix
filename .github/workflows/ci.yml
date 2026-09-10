@@ -22,6 +22,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          # Build from source if a binary-cache download fails, so a transient
+          # cache.nixos.org error doesn't red the run (bit us fetching nixfmt-tree).
+          extra-conf: fallback = true
 
       # Not `nix fmt`: formatter is a perSystem output and systems.nix declares
       # only aarch64-darwin, so it is absent on Linux. --inputs-from . keeps CI
@@ -36,6 +40,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          # Build from source if a binary-cache download fails, so a transient
+          # cache.nixos.org error doesn't red the run (bit us fetching nixfmt-tree).
+          extra-conf: fallback = true
 
       # Catches broken option references, bad merges and module wiring typos
       # that formatting alone would not. Hosts are discovered rather than listed,
