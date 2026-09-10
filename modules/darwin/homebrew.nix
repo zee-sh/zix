@@ -101,7 +101,7 @@
               # "aerospace" # https://github.com/nikitabobko/AeroSpace - i3-like tiling WM for macOS
               # "alt-tab" # https://alt-tab.app/ - Windows-like alt-tab
               # "hammerspoon" # https://www.hammerspoon.org/ - desktop automation
-              # "jordanbaird-ice" # https://icemenubar.app/ - menu bar manager (Ice)
+              "thaw" # https://github.com/thaw-app/Thaw - menu bar manager
               # "linearmouse" # https://linearmouse.org/ - mouse customization
 
               # Media
@@ -123,7 +123,6 @@
               # Security / privacy
               "1password" # https://1password.com/ - password manager
               "lulu" # https://objective-see.org/products/lulu.html - open-source outbound firewall
-              # "little-snitch" # https://www.obdev.at/products/littlesnitch/index.html - application firewall
               # "micro-snitch" # https://www.obdev.at/products/microsnitch/index.html - mic/camera activity monitor
 
               # Comms
@@ -133,7 +132,6 @@
 
               # Sync / VM
               # "syncthing-app" # https://syncthing.net/ - file synchronization
-              # "utm" # https://mac.getutm.app/ - virtual machines (QEMU)
             ];
 
             masApps = { };
