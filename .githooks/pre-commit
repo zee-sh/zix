@@ -10,6 +10,15 @@ if ! command -v nix >/dev/null 2>&1; then
   exit 0
 fi
 
+# Secret scan of staged content — runs for every commit, before the .nix-only
+# formatting gate below, so a staged .env/settings.json is scanned too.
+if ! nix run --inputs-from . nixpkgs#gitleaks -- git --staged --no-banner --redact; then
+  echo "pre-commit: gitleaks flagged a potential secret in staged changes (or could not run)." >&2
+  echo "Review above. False positive? Add an allowlist entry to .gitleaks.toml." >&2
+  echo "To bypass once: git commit --no-verify" >&2
+  exit 1
+fi
+
 staged_nix=$(git diff --cached --name-only --diff-filter=ACM | grep '\.nix$' || true)
 if [ -z "$staged_nix" ]; then
   exit 0
