@@ -48,6 +48,10 @@
                 name = "agavra/tap";
                 trusted = true;
               } # tuicr
+              {
+                name = "RizRiyz/luvus";
+                trusted = true;
+              } # luvus
             ];
 
             brews = [
@@ -67,6 +71,7 @@
               "rtk" # https://github.com/rtk-ai/rtk - CLI proxy that compresses command output for LLM agents
               "hunk" # https://hunk.dev/ - review-first terminal diff viewer
               "agavra/tap/tuicr" # https://github.com/agavra/tuicr - terminal UI for code reviews
+              "RizRiyz/luvus/luvus" # https://luvus.dev - mission control for AI coding agents
             ];
 
             casks = [
