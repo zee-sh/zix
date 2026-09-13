@@ -52,6 +52,14 @@
                 name = "RizRiyz/luvus";
                 trusted = true;
               } # luvus
+              {
+                name = "darksworm/tap";
+                trusted = true;
+              } # argonaut
+              {
+                name = "mattj85/spookiui";
+                trusted = true;
+              } # spookiui
             ];
 
             brews = [
@@ -60,6 +68,8 @@
               "ffmpeg" # https://ffmpeg.org/ - play, record, convert & stream audio/video
               # editor
               # "neovim" # now from nix (zix.neovim) — brew's bin would shadow it on PATH
+              # terminal
+              "mattj85/spookiui/spookiui" # https://github.com/mattj85/SpookiUI - live configurator TUI for Ghostty
               # cloud / k8s auth
               "granted" # https://granted.dev/ - the easiest way to access your cloud
               "danielfoehrkn/switch/switch" # https://github.com/danielfoehrKn/kubeswitch - the kubectx for operators
@@ -91,6 +101,7 @@
               # Kubernetes / DevOps
               "aptakube" # https://aptakube.com/ - Kubernetes desktop client
               "headlamp" # https://headlamp.dev/ - Kubernetes UI
+              "argonaut" # https://github.com/darksworm/argonaut - keyboard-first Argo CD TUI
 
               # Productivity / notes
               "todoist-app" # https://todoist.com/ - to-do list
@@ -127,6 +138,9 @@
 
               # Security / privacy
               "1password" # https://1password.com/ - password manager
+              # nixpkgs has _1password-cli, but brew's build is the one 1Password
+              # signs for desktop-app integration (biometric unlock).
+              "1password-cli" # https://developer.1password.com/docs/cli - `op` CLI
               "lulu" # https://objective-see.org/products/lulu.html - open-source outbound firewall
               # "micro-snitch" # https://www.obdev.at/products/microsnitch/index.html - mic/camera activity monitor
 
@@ -179,6 +193,9 @@
               "pulumi" # https://www.pulumi.com/ - cloud-native IaC platform
               "pulumi/tap/esc" # https://www.pulumi.com/product/esc/ - Pulumi ESC (environments/secrets/config)
               "cloud-nuke" # https://gruntwork.io/ - nuke (delete) cloud resources
+              # nixpkgs has gcx but is stuck on 0.4.2 against upstream's 1.3.1 —
+              # a major version behind, so take the homebrew-core bottle.
+              "gcx" # https://github.com/grafana/gcx - CLI for Grafana / Grafana Cloud resources
               # kubernetes
               "clusterctl" # https://cluster-api.sigs.k8s.io - Cluster API management CLI
               "clusterawsadm" # https://cluster-api-aws.sigs.k8s.io - Cluster API AWS provider helper
