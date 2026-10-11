@@ -52,6 +52,7 @@
             uv # https://github.com/astral-sh/uv - fast Python package installer/resolver
             devbox # https://www.jetify.com/devbox - instant, predictable dev shells
             bun # https://bun.sh - fast JS runtime, bundler & package manager
+            nodejs # https://nodejs.org - JS runtime; bun covers most of this, but tools that shell out to `node`/`npm` need it
             go-task # https://taskfile.dev/ - task runner (simpler Make)
             pre-commit # https://pre-commit.com/ - manage git pre-commit hooks
 

@@ -82,6 +82,10 @@
               "hunk" # https://hunk.dev/ - review-first terminal diff viewer
               "agavra/tap/tuicr" # https://github.com/agavra/tuicr - terminal UI for code reviews
               "RizRiyz/luvus/luvus" # https://luvus.dev - mission control for AI coding agents
+              # reverse engineering
+              # nixpkgs has ghidra and supports aarch64-darwin, but it is not in the
+              # binary cache, so nix would build the whole Gradle/Java tree. brew bottles it.
+              "ghidra" # https://github.com/NationalSecurityAgency/ghidra - software reverse engineering framework
             ];
 
             casks = [

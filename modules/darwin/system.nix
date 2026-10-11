@@ -15,8 +15,11 @@
       # With home-manager useGlobalPkgs, this also applies to HM.
       nixpkgs.config.allowUnfree = true;
 
-      # Approve sudo with Touch ID (persists across rebuilds).
+      # Approve sudo with Touch ID (persists across rebuilds). reattach adds
+      # pam_reattach, without which Touch ID silently fails inside tmux/zellij/
+      # herdr — those panes are not attached to the GUI bootstrap session.
       security.pam.services.sudo_local.touchIdAuth = true;
+      security.pam.services.sudo_local.reattach = true;
 
       fonts.packages = [
         pkgs.nerd-fonts.jetbrains-mono
