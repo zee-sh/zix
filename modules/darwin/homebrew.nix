@@ -96,7 +96,11 @@
             casks = [
               # Browsers
               "brave-browser" # https://brave.com/ - privacy-focused web browser
-              "firefox" # https://www.mozilla.org/firefox/ - web browser
+              # Firefox is owned by the company's IRU tool (installs/updates it as
+              # root). A brew cask is a redundant updater that re-triggers the
+              # staged-update-vs-replaced-app breakage (rm -rf ~/Library/Caches/
+              # Mozilla/updates). Let IRU own it.
+              # "firefox" # https://www.mozilla.org/firefox/ - web browser
               "google-chrome" # https://www.google.com/chrome/ - web browser
 
               # Terminals
