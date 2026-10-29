@@ -60,6 +60,10 @@
                 name = "mattj85/spookiui";
                 trusted = true;
               } # spookiui
+              {
+                name = "reemus-dev/tap";
+                trusted = true;
+              } # ghostty-designer
             ];
 
             brews = [
@@ -70,6 +74,7 @@
               # "neovim" # now from nix (zix.neovim) — brew's bin would shadow it on PATH
               # terminal
               "mattj85/spookiui/spookiui" # https://github.com/mattj85/SpookiUI - live configurator TUI for Ghostty
+              "reemus-dev/tap/ghostty-designer" # https://github.com/reemus-dev/ghostty-designer - visual GUI editor for Ghostty config
               # cloud / k8s auth
               "granted" # https://granted.dev/ - the easiest way to access your cloud
               "danielfoehrkn/switch/switch" # https://github.com/danielfoehrKn/kubeswitch - the kubectx for operators
