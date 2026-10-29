@@ -31,6 +31,13 @@ key = "prefix+f"
 type = "plugin_action"
 command = "herdr-file-viewer.open-file-viewer"
 
+# auto-rename (zee-sh/herdr-auto-rename): tabs and pane borders follow each
+# agent's session name. Runs on its own; this re-labels everything on demand.
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "zee-sh.auto-rename.refresh"
+
 [update]
 # Disable auto version checks so the client doesn't jump protocol ahead of the
 # running server (caused repeated attach failures). Update manually with
