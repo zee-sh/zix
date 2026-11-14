@@ -64,12 +64,17 @@
                 name = "reemus-dev/tap";
                 trusted = true;
               } # ghostty-designer
+              {
+                name = "mutagen-io/mutagen";
+                trusted = true;
+              } # mutagen
             ];
 
             brews = [
               # shell / cli
               "coreutils" # https://www.gnu.org/software/coreutils/ - GNU file, shell & text utilities
               "ffmpeg" # https://ffmpeg.org/ - play, record, convert & stream audio/video
+              "mutagen-io/mutagen/mutagen" # https://mutagen.io - fast file sync & network forwarding for remote development
               # editor
               # "neovim" # now from nix (zix.neovim) — brew's bin would shadow it on PATH
               # terminal
@@ -101,6 +106,7 @@
 
               # Terminals
               "ghostty" # https://ghostty.org/ - native, GPU-accelerated terminal
+              "herdr-app" # https://herdr.dev/ - desktop app for terminals and coding agents (Herdr 2)
               # "wezterm" # https://wezterm.org/ - GPU terminal + multiplexer
 
               # Editors / IDE
@@ -138,6 +144,7 @@
               "lookaway" # https://lookaway.com/ - break-time reminder
               "betterdisplay" # https://betterdisplay.pro/ - display management
               "balenaetcher" # https://balena.io/etcher - flash OS images to SD/USB
+              "purge" # https://purgemac.com/ - clears caches and junk files to the Trash
               # "appcleaner" # https://freemacsoft.net/appcleaner/ - app uninstaller
               # "hazel" # https://www.noodlesoft.com/ - automated file organization
               # "shottr" # https://shottr.cc/ - screenshot & annotation
