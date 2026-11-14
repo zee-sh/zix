@@ -7,6 +7,12 @@
   # plus PTYs plus child processes on one host, and session.json holds absolute
   # local paths. What is portable is the recipe — this config plus the
   # `herdr-personal` script below.
+  #
+  # Herdr 2 (herdr-core runtime + herdr-app desktop cask) is a SEPARATE generation
+  # that coexists with this (Herdr 1) multiplexer. herdr-core has no brew/nixpkgs
+  # route shipping its SIGNED app bundle (needed for macOS local-network/mic
+  # grants), so — like the plugin binaries below — it is installed imperatively
+  # once per machine: `curl -fsSL https://releases.herdr.dev/core/install.sh | sh`.
   flake.modules.homeManager.herdr =
     {
       config,
