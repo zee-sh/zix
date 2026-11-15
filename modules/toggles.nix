@@ -27,6 +27,7 @@
       claude.enable = lib.mkEnableOption "Claude Code status line (starship + session state)";
       neovim.enable = lib.mkEnableOption "neovim (nix-wrapper-modules; plugins + LSPs from nix)";
       herdr.enable = lib.mkEnableOption "herdr config + personal session bootstrap";
+      herdrSuite.enable = lib.mkEnableOption "own herdr extensions (herdr-suite) + Herdr app layout/keys/settings";
       aliases.enable = lib.mkEnableOption "shared shell aliases";
       packages.enable = lib.mkEnableOption "core CLI nix packages";
       cloud.enable = lib.mkEnableOption "cloud/k8s/IaC/DevSecOps tooling (work)";

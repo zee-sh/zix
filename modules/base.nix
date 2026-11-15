@@ -29,7 +29,7 @@ in
 
   # The darwin "catalog": every darwin feature is imported here and gated by its
   # own `zix.<f>.enable` toggle (off by default). Enabling a toggle turns it on.
-  flake.modules.darwin.base = {
+  flake.modules.darwin.base = darwinArgs: {
     imports = commonImports ++ [
       darwin.users
       darwin.systemBase
@@ -37,7 +37,12 @@ in
       darwin.homebrew
       darwin.nixpkgsWork
     ];
-    home-manager.sharedModules = [ homeManager.base ];
+    # herdr-suite is added only where it's on: its flake input is a private
+    # repo, so hosts without it (and CI) never fetch it.
+    home-manager.sharedModules = [
+      homeManager.base
+    ]
+    ++ darwinArgs.lib.optional darwinArgs.config.zix.herdrSuite.enable homeManager.herdrSuite;
   };
 
   # The home-manager "catalog": every HM feature imported here, each gated by

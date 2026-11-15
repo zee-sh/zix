@@ -20,5 +20,7 @@ in
       # is mutable here; the rest stay in-store.
       zix.dotfiles.path = config.profile.checkoutPath;
       zix.dotfiles.mutable.claude-settings = true;
+      # The Herdr app rewrites its keys, settings and layout itself.
+      zix.dotfiles.mutable.herdr-app = true;
     };
 }
