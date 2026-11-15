@@ -54,6 +54,14 @@
       flake = false;
     };
 
+    # Own herdr TUI plugins + Herdr app mods: over SSH while the repo is private
+    # (CI can't fetch it); then "github:zee-sh/herdr-suite".
+    herdr-suite = {
+      url = "git+ssh://git@github.com/zee-sh/herdr-suite?ref=main";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     # sops-nix (secrets) added when needed.
   };
 

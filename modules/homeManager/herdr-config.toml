@@ -31,12 +31,8 @@ key = "prefix+f"
 type = "plugin_action"
 command = "herdr-file-viewer.open-file-viewer"
 
-# auto-rename (zee-sh/herdr-auto-rename): tabs and pane borders follow each
-# agent's session name. Runs on its own; this re-labels everything on demand.
-[[keys.command]]
-key = "prefix+t"
-type = "plugin_action"
-command = "zee-sh.auto-rename.refresh"
+# zee-sh.* plugin keys come from herdr-suite (tui.keybindings), appended by
+# herdr.nix when herdrSuite is on, with its tab_bar_right entries.
 
 [update]
 # Disable auto version checks so the client doesn't jump protocol ahead of the
@@ -54,6 +50,10 @@ show_agent_labels_on_pane_borders = true
 
 [ui.toast]
 delivery = "system"
+
+[session]
+# Bring agents back (resuming their sessions) after a server restart or reboot.
+resume_agents_on_restore = true
 
 [experimental]
 # Replays recent pane contents after a server restart. Pane output is written to

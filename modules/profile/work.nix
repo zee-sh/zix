@@ -7,6 +7,7 @@
         zix = {
           git.enable = lib.mkDefault true;
           cloud.enable = lib.mkDefault true;
+          herdrSuite.enable = lib.mkDefault true;
           # work Homebrew (homebrewWork) and permitted-insecure (nixpkgsWork) gate
           # directly on profiles.work.enable.
         };

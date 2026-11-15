@@ -24,6 +24,20 @@
     let
       home = config.home.homeDirectory;
 
+      suite = config.programs.herdr-suite.tui;
+      mine = builtins.fromTOML (builtins.readFile ./herdr-config.toml);
+      herdrConfig = (pkgs.formats.toml { }).generate "herdr-config.toml" (
+        mine
+        // {
+          keys = mine.keys // {
+            command = (mine.keys.command or [ ]) ++ suite.keybindings;
+          };
+          ui = mine.ui // {
+            tab_bar_right = (mine.ui.tab_bar_right or [ ]) ++ suite.tabBarRight;
+          };
+        }
+      );
+
       # Workspaces the personal session should always have. Add a line here and
       # rerun `herdr-personal` on each Mac; existing workspaces are left alone.
       personalWorkspaces = {
@@ -97,8 +111,13 @@
     in
     {
       config = lib.mkIf osConfig.zix.herdr.enable {
+        # With herdr-suite, its plugin keys and tab-bar entries are appended, so the
+        # file is generated (read-only); without, it stays a (mutable) dotfile.
         xdg.configFile."herdr/config.toml".source =
-          config.dotfiles.make "herdr" "modules/homeManager/herdr-config.toml";
+          if osConfig.zix.herdrSuite.enable then
+            herdrConfig
+          else
+            config.dotfiles.make "herdr" "modules/homeManager/herdr-config.toml";
 
         # Plugin configs. The plugin BINARIES are installed imperatively, once per
         # machine (`herdr plugin install <repo>`); nix only manages their config.

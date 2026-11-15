@@ -9,7 +9,6 @@
 # error until fixed), so keep this minimal and valid.
 
 theme = "catppuccin"
-base_branches = ["main", "master"]
 default_scope = "branch"
 # Auto-open a review pane on worktree.created. Left off — opt in per worktree via
 # the prefix+r toggle (see [[keys.command]] in herdr-config.toml).

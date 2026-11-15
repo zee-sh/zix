@@ -37,6 +37,30 @@
         "type": "github"
       }
     },
+    "herdr-suite": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794841775,
+        "narHash": "sha256-dtrBqtP8phGdNywnqJCTep5yIV0AJ+QVxs1s0LtOf2w=",
+        "ref": "main",
+        "rev": "d1e0723ac69f5405559a62dc523c94f2b840ef08",
+        "revCount": 4,
+        "type": "git",
+        "url": "ssh://git@github.com/zee-sh/herdr-suite"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "ssh://git@github.com/zee-sh/herdr-suite"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -184,6 +208,7 @@
       "inputs": {
         "brew-src": "brew-src",
         "flake-parts": "flake-parts",
+        "herdr-suite": "herdr-suite",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "nix-darwin": "nix-darwin",
