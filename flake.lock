@@ -47,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794912731,
-        "narHash": "sha256-/y5LLQRed50NsFIhyZbQvO5aF8kqxtKSj6OJ8U1Fmb8=",
+        "lastModified": 1795279716,
+        "narHash": "sha256-nqdB5fOwWqDR59pIJ/O3ZvydU3RoE6gcr+YJfdf+pSg=",
         "ref": "main",
-        "rev": "2eab5b22eaf3976ec1f8e1df22c07549b12705c2",
-        "revCount": 6,
+        "rev": "4d5751c1d82d9dd3ce8afe688fd186e743ee89c2",
+        "revCount": 10,
         "type": "git",
         "url": "ssh://git@github.com/zee-sh/herdr-suite"
       },
