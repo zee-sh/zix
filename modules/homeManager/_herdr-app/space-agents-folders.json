@@ -1,0 +1,26 @@
+{
+  "folders": [
+    {
+      "name": "Work",
+      "color": "dim",
+      "rules": [
+        "~"
+      ]
+    },
+    {
+      "name": "Development",
+      "parent": "Work",
+      "color": "cyan",
+      "rules": [
+        "~/work"
+      ]
+    },
+    {
+      "name": "Personal",
+      "color": "green",
+      "rules": [
+        "~/projects"
+      ]
+    }
+  ]
+}
