@@ -54,6 +54,9 @@
         };
 
         home.file.".config/herdr-app/settings.json".source = appFile "settings.json";
+        # The sidebar's folders: the app renames them in place, so same as settings.
+        xdg.configFile."herdr/plugins/config/zee-sh.space-agents/folders.json".source =
+          appFile "space-agents-folders.json";
       };
     };
 }
