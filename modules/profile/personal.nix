@@ -18,6 +18,7 @@
           claude.enable = lib.mkDefault true;
           neovim.enable = lib.mkDefault true;
           herdr.enable = lib.mkDefault true;
+          zapfast.enable = lib.mkDefault true;
           aliases.enable = lib.mkDefault true;
           packages.enable = lib.mkDefault true;
           homebrew.enable = lib.mkDefault true;

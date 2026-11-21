@@ -28,6 +28,7 @@
       neovim.enable = lib.mkEnableOption "neovim (nix-wrapper-modules; plugins + LSPs from nix)";
       herdr.enable = lib.mkEnableOption "herdr config + personal session bootstrap";
       herdrSuite.enable = lib.mkEnableOption "own herdr extensions (herdr-suite) + Herdr app layout/keys/settings";
+      zapfast.enable = lib.mkEnableOption "ZapFast WhatsApp desktop client (flake + HM module, declarative settings)";
       aliases.enable = lib.mkEnableOption "shared shell aliases";
       packages.enable = lib.mkEnableOption "core CLI nix packages";
       cloud.enable = lib.mkEnableOption "cloud/k8s/IaC/DevSecOps tooling (work)";

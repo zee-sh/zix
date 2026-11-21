@@ -62,6 +62,15 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    # ZapFast (WhatsApp desktop client). Its flake builds + self-signs the
+    # aarch64-darwin .app (mic entitlements) and ships a home-manager module, so
+    # it's declarative here, not a brew cask. No upstream cache: first build (and
+    # post-GC) compiles the Rust tree — tolerated for one GUI app.
+    zapfast = {
+      url = "github:crmne/zapfast";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # sops-nix (secrets) added when needed.
   };
 

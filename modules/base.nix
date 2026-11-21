@@ -62,6 +62,7 @@ in
       homeManager.claude
       homeManager.neovim
       homeManager.herdr
+      homeManager.zapfast
       homeManager.aliases
       homeManager.packages
       homeManager.changesReport

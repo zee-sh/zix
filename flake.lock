@@ -216,7 +216,50 @@
         "nix-wrapper-modules": "nix-wrapper-modules",
         "nixpkgs": "nixpkgs",
         "plugins-lze": "plugins-lze",
-        "plugins-lzextras": "plugins-lzextras"
+        "plugins-lzextras": "plugins-lzextras",
+        "zapfast": "zapfast"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "zapfast",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789977098,
+        "narHash": "sha256-fKY4BedarKx4aR0+UOHk65hhDW8pxFytFkaUi0VYDYk=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "2776e42828203ec89511699c8dcdedec69ab98e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "zapfast": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1794888131,
+        "narHash": "sha256-eDXn2wSXK7zYx+6ZUBP2r2ovjsGzHxR3G7REq+ermQY=",
+        "owner": "crmne",
+        "repo": "zapfast",
+        "rev": "a6f0f624a4a82dbdc5b0b08e721794fbe943348a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "crmne",
+        "repo": "zapfast",
+        "type": "github"
       }
     }
   },
