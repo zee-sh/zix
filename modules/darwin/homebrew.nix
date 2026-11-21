@@ -111,9 +111,9 @@
               # Terminals
               "ghostty" # https://ghostty.org/ - native, GPU-accelerated terminal
               "herdr-app" # https://herdr.dev/ - desktop app for terminals and coding agents (Herdr 2)
-              # "wezterm" # https://wezterm.org/ - GPU terminal + multiplexer
 
               # Editors / IDE
+              "antigravity" # https://antigravity.google/ - Google's agent-first AI IDE
               # "cursor" # https://www.cursor.com/ - AI code editor
               # "visual-studio-code" # https://code.visualstudio.com/ - code editor
 
