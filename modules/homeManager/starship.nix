@@ -68,49 +68,18 @@
               format = " [$symbol$context(\\($namespace\\))]($style) ";
               style = "bright-blue";
               disabled = false;
-              contexts = [
-                {
-                  context_pattern = ".*2729:cluster/cloud";
+              # Contexts flagged in red: zix.starship.alertKubeContexts, then AKS prod.
+              contexts =
+                map (context_pattern: {
+                  inherit context_pattern;
                   style = "bright-red";
                   symbol = "🚨";
-                }
-                {
-                  context_pattern = ".*6246:cluster/cloud";
-                  style = "bright-red";
-                  symbol = "🚨";
-                }
-                {
-                  context_pattern = ".*1712:cluster/cloud";
-                  style = "bright-red";
-                  symbol = "🚨";
-                }
-                {
-                  context_pattern = ".*8219:cluster/cloud";
-                  style = "bright-red";
-                  symbol = "🚨";
-                }
-                {
-                  context_pattern = ".*7106:cluster/cloud";
-                  style = "bright-red";
-                  symbol = "🚨";
-                }
-                {
-                  context_pattern = ".*5089:cluster/cloud-controlplane";
-                  style = "bright-red";
-                  symbol = "🚨";
-                }
-                # AKS prod clusters — same warning as the prod contexts above
-                {
-                  context_pattern = "aks-.*-prod-.*";
-                  style = "bright-red";
-                  symbol = "🚨";
-                }
-              ];
+                }) (osConfig.zix.starship.alertKubeContexts ++ [ "aks-.*-prod-.*" ]);
             };
 
             # AWS profile, shortened by pattern so no account names live in this repo.
             # "<svc>-<env>-<region>-<role>" -> "<svc>-<env>"; multi-word prefixes become
-            # initials ("cloud-controlplane-prod-use1-admin" -> "cc-prod"). Region is
+            # initials ("data-platform-prod-use1-admin" -> "dp-prod"). Region is
             # rendered separately by the aws module above.
             custom.aws_profile = {
               description = "Shortened AWS profile name";

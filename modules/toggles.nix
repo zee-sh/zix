@@ -21,6 +21,11 @@
       zsh.enable = lib.mkEnableOption "zsh (primary shell)";
       nushell.enable = lib.mkEnableOption "nushell";
       starship.enable = lib.mkEnableOption "starship prompt";
+      starship.alertKubeContexts = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "Kube context regexes the prompt flags in red; set from a private config.";
+      };
       tmux.enable = lib.mkEnableOption "tmux";
       zellij.enable = lib.mkEnableOption "zellij";
       ghostty.enable = lib.mkEnableOption "ghostty terminal config";
