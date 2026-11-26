@@ -33,6 +33,9 @@
           iac-board.enable = work;
           # Start URL and region: by hand in its config.local on the work Mac, not here.
           sso-status.enable = work;
+          tab-bar.enable = true;
+          # ctrl-` pops up a shell; send it into a space as a tab or a pane.
+          quickshell.enable = true;
           # my-main(-herdr).json and their keys, made for what's on above.
           app.layout = {
             enable = true;
@@ -54,6 +57,9 @@
         };
 
         home.file.".config/herdr-app/settings.json".source = appFile "settings.json";
+        # The sidebar's folders: the app renames them in place, so same as settings.
+        xdg.configFile."herdr/plugins/config/zee-sh.space-agents/folders.json".source =
+          appFile "space-agents-folders.json";
       };
     };
 }
